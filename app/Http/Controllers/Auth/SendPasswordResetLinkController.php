@@ -11,7 +11,25 @@ use Illuminate\Validation\ValidationException;
 class SendPasswordResetLinkController extends Controller
 {
     /**
-     * Send a reset link to the given email address.
+     * @OA\Post(
+     * path="/forgot-password",
+     * operationId="forgot-password",
+     * tags={"forgot-password"},
+     * tags={"Login"},
+     * summary="Recuperar senha",
+     *  @OA\RequestBody(
+     *       required=true,
+     *       @OA\JsonContent(
+     *           required={"email"},
+     *           @OA\Property(property="email", type="string", example="teste@mail.com")
+     *        )
+     *    ),
+     *  @OA\Response(response=201, description="Login recuperado com sucesso", @OA\JsonContent()),
+     *  @OA\Response(response=200, description="Login recuperado com sucesso", @OA\JsonContent()),
+     *  @OA\Response(response=422, description="O servidor não entende o tipo de conteúdo da entidade de solicitação", @OA\JsonContent()),
+     *  @OA\Response(response=400, description="Ocoreu um erro"),
+     *  @OA\Response(response=404, description="Página não localizada"),
+     * )
      */
     public function __invoke(Request $request): JsonResponse
     {
@@ -30,7 +48,7 @@ class SendPasswordResetLinkController extends Controller
         }
 
         return response()->json([
-            'status' => __($status)
+            'message' => __($status)
         ]);
     }
 }

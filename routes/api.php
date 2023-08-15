@@ -27,6 +27,7 @@ Route::get('/cuidado', function(){
 
 require __DIR__ . '/auth.php';
 
+/*
 Route::middleware('auth:api')->group(function () {
     Route::get('/user', [App\Http\Controllers\UserController::class, 'show'])
         ->name('user.show');
@@ -39,6 +40,6 @@ Route::middleware(['auth:api', 'verified'])->group(function () {
     Route::patch('/user/change-password', [UserController::class, 'changePassword'])
         ->name('user.change-password');
 });
-
+*/
 
 

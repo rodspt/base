@@ -22,6 +22,8 @@ Route::post('/forgot-password', SendPasswordResetLinkController::class)
 Route::post('/reset-password', ResetPasswordController::class)
     ->name('password.update');
 
+
+
 Route::middleware('auth:api')->group(function () {
     Route::post('/email/verification-notification', SendEmailVerificationNotificationController::class)
         ->middleware(['throttle:6,1'])

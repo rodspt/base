@@ -15,7 +15,28 @@ use Illuminate\Validation\ValidationException;
 class ResetPasswordController extends Controller
 {
     /**
-     * Reset the password of the currently authenticated user.
+     * @OA\Post(
+     * path="/reset-password",
+     * operationId="reset-password",
+     * tags={"reset-password"},
+     * tags={"Login"},
+     * summary="Resetar senha",
+     *  @OA\RequestBody(
+     *       required=true,
+     *       @OA\JsonContent(
+     *           required={"token","email","password","password_confirmation"},
+     *           @OA\Property(property="token", type="string"),
+     *           @OA\Property(property="email", type="string", example="teste@mail.com"),
+     *           @OA\Property(property="password", type="string", example="teste123456"),
+     *           @OA\Property(property="password_confirmation", type="string", example="teste123456"),
+     *        )
+     *    ),
+     *  @OA\Response(response=201, description="Login recuperado com sucesso", @OA\JsonContent()),
+     *  @OA\Response(response=200, description="Login recuperado com sucesso", @OA\JsonContent()),
+     *  @OA\Response(response=422, description="O servidor não entende o tipo de conteúdo da entidade de solicitação", @OA\JsonContent()),
+     *  @OA\Response(response=400, description="Ocoreu um erro"),
+     *  @OA\Response(response=404, description="Página não localizada"),
+     * )
      */
     public function __invoke(Request $request): JsonResponse
     {
@@ -44,7 +65,7 @@ class ResetPasswordController extends Controller
         }
 
         return response()->json([
-            'status' => __($status)
+            'message' => __($status)
         ]);
     }
 }
