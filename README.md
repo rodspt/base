@@ -8,6 +8,7 @@
 - **[Breeze](https://laravel.com/docs/10.x/starter-kits#breeze-and-next)**
 - **[Debugbar](https://github.com/barryvdh/laravel-debugbar)**
 - **[Swagger](https://github.com/darkaonline/l5-swagger)**
+- **[Traducao](https://github.com/lucascudo/laravel-pt-BR-localization)**
 
 
 # Instruções
