@@ -19,7 +19,7 @@
     },
     "require-dev": {
         "barryvdh/laravel-debugbar": "^3.8",
-        "fakerphp/faker": "^1.9.1",
+        "fakerphp/faker": "^1.23",
         "laravel/pint": "^1.0",
         "laravel/sail": "^1.18",
         "laravel/telescope": "^4.16",
