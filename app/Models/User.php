@@ -16,11 +16,19 @@ class User extends Authenticatable implements JWTSubject, MustVerifyEmail
     use Notifiable;
 
     /**
+     * Por padrao a chave primaria e incremental de inteiro
+     */
+    protected $primaryKey = 'cpf';
+    public $incrementing = false;
+    protected $keyType = 'string';
+
+    /**
      * The attributes that are mass assignable.
      *
      * @var array<int, string>
      */
     protected $fillable = [
+        'cpf',
         'name',
         'email',
         'password',

@@ -32,12 +32,17 @@
                         "application/json": {
                             "schema": {
                                 "required": [
+                                    "cpf",
                                     "name",
                                     "email",
                                     "password",
                                     "password_confirmation"
                                 ],
                                 "properties": {
+                                    "cpf": {
+                                        "type": "string",
+                                        "example": "00000000019"
+                                    },
                                     "name": {
                                         "type": "string",
                                         "example": "teste"
@@ -107,13 +112,13 @@
                         "application/json": {
                             "schema": {
                                 "required": [
-                                    "email",
+                                    "cpf",
                                     "password"
                                 ],
                                 "properties": {
-                                    "email": {
+                                    "cpf": {
                                         "type": "string",
-                                        "example": "teste@mail.com"
+                                        "example": "00000000191"
                                     },
                                     "password": {
                                         "type": "string",

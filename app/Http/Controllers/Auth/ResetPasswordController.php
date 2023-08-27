@@ -42,12 +42,13 @@ class ResetPasswordController extends Controller
     {
         $request->validate([
             'token' => ['required'],
+            'cpf' => ['required', 'cpf'],
             'email' => ['required', 'email'],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
         ]);
 
         $status = Password::reset(
-            $request->only('email', 'password', 'password_confirmation', 'token'),
+            $request->only('cpf','email', 'password', 'password_confirmation', 'token'),
             function ($user) use ($request) {
                 $user->forceFill([
                     'password' => Hash::make($request->password),

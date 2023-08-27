@@ -51,7 +51,7 @@ class UserController extends Controller
         ]);
 
         return response()->json([
-            'status' => 'Password updated.'
+            'status' => 'Senha alterada com sucesso.'
         ]);
     }
 }

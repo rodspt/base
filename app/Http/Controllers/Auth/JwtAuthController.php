@@ -3,18 +3,24 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\CreateUserRequest;
 use App\Http\Resources\UserResource;
 use App\Models\User;
+use App\Traits\ResponseTrait;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Validation\Rules;
 
 class JwtAuthController extends Controller
 {
+    /**
+     * Response trait to handle return responses.
+     */
+    use ResponseTrait;
+
      /**
      * @OA\Post(
      * path="/register",
@@ -25,7 +31,8 @@ class JwtAuthController extends Controller
      *  @OA\RequestBody(
      *       required=true,
      *       @OA\JsonContent(
-     *           required={"name","email","password","password_confirmation"},
+     *           required={"cpf","name","email","password","password_confirmation"},
+	 *           @OA\Property(property="cpf", type="string", example="00000000019"),
 	 *           @OA\Property(property="name", type="string", example="teste"),
      *           @OA\Property(property="email", type="string", example="teste@mail.com"),
      *           @OA\Property(property="password", type="string", example="teste123456"),
@@ -39,25 +46,22 @@ class JwtAuthController extends Controller
      *  @OA\Response(response=404, description="Página não localizada"),
      * )
      */
-    public function register(Request $request): JsonResponse
+    public function register(CreateUserRequest $request): JsonResponse
     {
-        $request->validate([
-            'name' => ['required', 'string','min:3', 'max:255'],
-            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
-            'password' => ['required', 'confirmed', Rules\Password::defaults()],
-        ]);
 
-        $user = User::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => Hash::make($request->password),
-        ]);
+        try {
+            $user = new User();
+            $data = $request->validated();
+            $data['passwrod'] = Hash::make($request->password);
+            $user->fill($request->validated());
+            $user->save();
+            event(new Registered($user));
 
-        event(new Registered($user));
+            return $this->responseSuccess([],'Usuário criado com sucesso');
+        } catch (\Exception $e){
+            return $this->responseError([], $e->getMessage(), JsonResponse::HTTP_BAD_REQUEST);
+        }
 
-        return response()->json([
-            'message' => 'Usuário criado com sucesso'
-        ]);
     }
 
      /**
@@ -70,8 +74,8 @@ class JwtAuthController extends Controller
      *  @OA\RequestBody(
      *       required=true,
      *       @OA\JsonContent(
-     *           required={"email","password"},
-     *           @OA\Property(property="email", type="string", example="teste@mail.com"),
+     *           required={"cpf","password"},
+     *           @OA\Property(property="cpf", type="string", example="00000000191"),
      *           @OA\Property(property="password", type="string", example="teste123456")
      *        )
      *    ),
@@ -85,13 +89,14 @@ class JwtAuthController extends Controller
     public function login(Request $request): JsonResponse
     {
         $request->validate([
-            'email' => ['required', 'email'],
-            'password' => ['required', 'string'],
+            'cpf' => ['required', 'string'],
+            'password' => ['required', 'string']
         ]);
 
-        $credentials = $request->only(['email', 'password']);
+        $credentials = $request->only(['cpf', 'password']);
 
         $token = Auth::attempt($credentials);
+
 
         if (!$token) {
             return response()->json([
@@ -99,8 +104,9 @@ class JwtAuthController extends Controller
             ], 401);
         }
 
+        $data = User::find($request->cpf);
         return response()->json([
-            'user' => new UserResource(Auth::user()),
+            'user' => new UserResource($data),
             'access_token' => $token,
         ]);
     }

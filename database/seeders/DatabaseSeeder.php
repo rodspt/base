@@ -11,16 +11,11 @@ class DatabaseSeeder extends Seeder
     {
         // Test user 1
         User::factory()->create([
+            'cpf' => '03106929111',
             'name' => 'teste',
             'email' => 'teste@mail.com',
-            'password' => bcrypt('teste')
+            'password' => bcrypt('teste123456')
         ]);
 
-        // Test user 2
-        User::factory()->create([
-            'name' => 'teste2',
-            'email' => 'teste2@mail.com',
-            'password' => bcrypt('teste2')
-        ]);
     }
 }
