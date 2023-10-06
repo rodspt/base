@@ -2,7 +2,6 @@
 
 namespace App\Repositories;
 
-use App\Http\Resources\TestResource as Resource;
 use App\Models\Teste;
 
 class TestRepository
@@ -19,6 +18,7 @@ class TestRepository
 
         $data->orderBy('name');
         $data = $data->paginate( $perPage );
-        return new Resource($data);
+
+        return $data;
     }
 }

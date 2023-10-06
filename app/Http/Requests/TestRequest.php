@@ -2,16 +2,29 @@
 
 namespace App\Http\Requests;
 
+use App\Models\Teste;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class TestRequest extends FormRequest
 {
+    /**
+     * Traduz o nome da coluna no banco para o nome de exibição no request
+     */
+    public function attributes()
+    {
+        return [
+            'name' => 'Nome',
+            'description' => 'Descrição',
+        ];
+    }
+
     /**
      * Determine if the user is authorized to make this request.
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,7 +35,8 @@ class TestRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'name' => ['string', 'max:255'],
+            'description' => ['string', 'max:255', Rule::unique(Teste::class)->ignore($this?->teste)],
         ];
     }
 }

@@ -11,6 +11,8 @@ use App\Traits\ResponseTrait;
 class TestServices
 {
     use ResponseTrait;
+
+
     public function show($obj)
     {
         $find = Model::find($obj);
@@ -18,7 +20,7 @@ class TestServices
             $resource = new Resource($find);
             return $this->responseData($resource->colecao($find));
         }else{
-            return $this->responseError(null, 'Ator não localizado');
+            return $this->responseError(null, 'Teste não localizado');
         }
     }
 

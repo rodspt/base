@@ -33,6 +33,13 @@ Route::get('/cuidado', function(){
 
 require __DIR__ . '/auth.php';
 
+
+Route::middleware('auth:api')->group(function () {
+    Route::apiResource('/teste', App\Http\Controllers\TestController::class);
+});
+
+
+
 /*
 Route::middleware('auth:api')->group(function () {
     Route::get('/user', [App\Http\Controllers\UserController::class, 'show'])

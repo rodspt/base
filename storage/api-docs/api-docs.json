@@ -450,7 +450,7 @@
                         "required": true,
                         "schema": {
                             "type": "integer",
-                            "example": "6"
+                            "example": "00000000191"
                         }
                     },
                     {
@@ -475,6 +475,331 @@
                     },
                     "200": {
                         "description": "Checagem de e-mail realizada com sucesso",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "O servidor não entende o tipo de conteúdo da entidade de solicitação",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Ocoreu um erro"
+                    },
+                    "404": {
+                        "description": "Página não localizada"
+                    }
+                },
+                "security": [
+                    {
+                        "apiAuth": []
+                    }
+                ]
+            }
+        },
+        "/teste?search={search}": {
+            "get": {
+                "tags": [
+                    "Teste"
+                ],
+                "summary": "Listagem de Teste",
+                "operationId": "listarTest",
+                "parameters": [
+                    {
+                        "name": "search",
+                        "in": "path",
+                        "description": "Descrição do filtro",
+                        "required": false,
+                        "allowEmptyValue": true,
+                        "schema": {
+                            "type": "string",
+                            "example": ""
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Listagem realizada com sucesso",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    },
+                    "200": {
+                        "description": "Listagem realizada com sucesso",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "O servidor não entende o tipo de conteúdo da entidade de solicitação",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Ocoreu um erro"
+                    },
+                    "404": {
+                        "description": "Página não localizada"
+                    }
+                },
+                "security": [
+                    {
+                        "apiAuth": []
+                    }
+                ]
+            }
+        },
+        "/teste/{teste}": {
+            "get": {
+                "tags": [
+                    "Teste"
+                ],
+                "summary": "Buscar Teste",
+                "operationId": "buscarTeste",
+                "parameters": [
+                    {
+                        "name": "teste",
+                        "in": "path",
+                        "description": "Id do Teste",
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64",
+                            "example": "1"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Busca realizada com sucesso",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    },
+                    "200": {
+                        "description": "Busca realizada com sucesso",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "O servidor não entende o tipo de conteúdo da entidade de solicitação",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Ocoreu um erro"
+                    },
+                    "404": {
+                        "description": "Página não localizada"
+                    }
+                },
+                "security": [
+                    {
+                        "apiAuth": []
+                    }
+                ]
+            },
+            "put": {
+                "tags": [
+                    "Teste"
+                ],
+                "summary": "Atualizar Teste",
+                "operationId": "updateTeste",
+                "parameters": [
+                    {
+                        "name": "teste",
+                        "in": "path",
+                        "description": "ID do teste",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64",
+                            "example": 1
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "name",
+                                    "description"
+                                ],
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "example": "Nome"
+                                    },
+                                    "description": {
+                                        "type": "string",
+                                        "example": "Descrição"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Teste excluido com sucesso",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    },
+                    "200": {
+                        "description": "Teste excluido com sucesso",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "O servidor não entende o tipo de conteúdo da entidade de solicitação",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Ocoreu um erro"
+                    },
+                    "404": {
+                        "description": "Página não localizada"
+                    }
+                },
+                "security": [
+                    {
+                        "apiAuth": []
+                    }
+                ]
+            },
+            "delete": {
+                "tags": [
+                    "Teste"
+                ],
+                "summary": "Excluir Teste",
+                "operationId": "excluirTeste",
+                "parameters": [
+                    {
+                        "name": "teste",
+                        "in": "path",
+                        "description": "ID do teste",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64",
+                            "example": 1
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Teste excluido com sucesso",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    },
+                    "200": {
+                        "description": "Teste excluido com sucesso",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "O servidor não entende o tipo de conteúdo da entidade de solicitação",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Ocoreu um erro"
+                    },
+                    "404": {
+                        "description": "Página não localizada"
+                    }
+                },
+                "security": [
+                    {
+                        "apiAuth": []
+                    }
+                ]
+            }
+        },
+        "/teste": {
+            "post": {
+                "tags": [
+                    "Teste"
+                ],
+                "summary": "Registrar Teste",
+                "operationId": "registerTeste",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "name",
+                                    "description"
+                                ],
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "example": "Nome"
+                                    },
+                                    "description": {
+                                        "type": "string",
+                                        "example": "Descrição"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Teste cadastrado com sucesso",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    },
+                    "200": {
+                        "description": "Teste cadastrado com sucesso",
                         "content": {
                             "application/json": {
                                 "schema": {}

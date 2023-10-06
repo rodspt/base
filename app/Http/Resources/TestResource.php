@@ -2,18 +2,28 @@
 
 namespace App\Http\Resources;
 
-use Illuminate\Http\Request;
-use Illuminate\Http\Resources\Json\JsonResource;
+use App\Models\Teste;
+use Illuminate\Http\Resources\Json\ResourceCollection;
 
-class TestResource extends JsonResource
+class TestResource extends ResourceCollection
 {
     /**
      * Transform the resource into an array.
      *
      * @return array<string, mixed>
      */
-    public function toArray(Request $request): array
+    public function toArray($request)
     {
-        return parent::toArray($request);
+        $this->collection->transform(function(Teste $teste) {
+            return [
+                'id'      =>  $teste->id,
+                'name'      =>  $teste->name,
+                'description' =>  $teste->description,
+            ];
+        });
+        return [
+            'data' => $this->collection,
+            'total' => $this->resource->count()
+        ];
     }
 }
