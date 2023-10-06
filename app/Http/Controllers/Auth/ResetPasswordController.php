@@ -24,7 +24,8 @@ class ResetPasswordController extends Controller
      *  @OA\RequestBody(
      *       required=true,
      *       @OA\JsonContent(
-     *           required={"token","email","password","password_confirmation"},
+     *           required={"cpf","token","email","password","password_confirmation"},
+     *           @OA\Property(property="cpf", type="string"),
      *           @OA\Property(property="token", type="string"),
      *           @OA\Property(property="email", type="string", example="teste@mail.com"),
      *           @OA\Property(property="password", type="string", example="teste123456"),

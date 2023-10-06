@@ -41,7 +41,7 @@
                                 "properties": {
                                     "cpf": {
                                         "type": "string",
-                                        "example": "00000000019"
+                                        "example": "00000000191"
                                     },
                                     "name": {
                                         "type": "string",
@@ -264,12 +264,16 @@
                         "application/json": {
                             "schema": {
                                 "required": [
+                                    "cpf",
                                     "token",
                                     "email",
                                     "password",
                                     "password_confirmation"
                                 ],
                                 "properties": {
+                                    "cpf": {
+                                        "type": "string"
+                                    },
                                     "token": {
                                         "type": "string"
                                     },

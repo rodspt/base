@@ -5,7 +5,7 @@ namespace App\Http\Requests;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rules\Password;
 
-class CreateUserRequest extends FormRequest
+class LoginUserRequest extends FormRequest
 {
 
     /**
@@ -15,8 +15,6 @@ class CreateUserRequest extends FormRequest
     {
         return [
             'cpf' => 'cpf',
-            'name' => 'nome',
-            'email' => 'e-mail',
             'password' => 'senha',
         ];
     }
@@ -39,9 +37,7 @@ class CreateUserRequest extends FormRequest
 
         return [
             'cpf' => "required|min:11|max:11|unique:users,cpf",
-            'name' => ['required', 'string','min:3', 'max:255'],
-            'email' => ['required', 'string', 'email', 'max:255', 'unique:users,email'],
-            'password' => ['required', 'confirmed', Password::defaults()],
+            'password' => ['required', Password::defaults()],
         ];
     }
 }

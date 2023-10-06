@@ -17,3 +17,9 @@
 1) cp .env.example .env
 
 2) ./vendor/bin/sail up -d
+
+3) php artisan key:generate
+
+4) php artisan jwt:secret
+
+5) php artisan octane:start ou  octane:reload

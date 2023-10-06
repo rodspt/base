@@ -32,7 +32,7 @@ class JwtAuthController extends Controller
      *       required=true,
      *       @OA\JsonContent(
      *           required={"cpf","name","email","password","password_confirmation"},
-	 *           @OA\Property(property="cpf", type="string", example="00000000019"),
+	 *           @OA\Property(property="cpf", type="string", example="00000000191"),
 	 *           @OA\Property(property="name", type="string", example="teste"),
      *           @OA\Property(property="email", type="string", example="teste@mail.com"),
      *           @OA\Property(property="password", type="string", example="teste123456"),

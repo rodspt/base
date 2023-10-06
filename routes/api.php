@@ -4,19 +4,25 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
-/*
-|--------------------------------------------------------------------------
-| API Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register API routes for your application. These
-| routes are loaded by the RouteServiceProvider and all of them will
-| be assigned to the "api" middleware group. Make something great!
-|
-*/
+
 Route::get('/', function () {
     return view('welcome');
 });
+
+Route::get('/migrate', function () {
+    if(getenv('APP_ENV') === 'local') {
+        Artisan::call('migrate:refresh', ['--seed' => true, '--force' => true]);
+        return "Comando 'migrate:refresh --seed' executado com sucesso!";
+    }
+});
+
+Route::get('/swagger', function () {
+    if(getenv('APP_ENV') === 'local') {
+        Artisan::call('l5-swagger:generate');
+        return "Comando 'l5-swagger:generate executado com sucesso!";
+    }
+});
+
 
 
 Route::get('/cuidado', function(){
