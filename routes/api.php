@@ -23,6 +23,13 @@ Route::get('/swagger', function () {
     }
 });
 
+Route::get('/octane', function () {
+    if(getenv('APP_ENV') === 'local') {
+        Artisan::call('octane:reload');
+        return "Comando 'octane:reload executado com sucesso!";
+    }
+});
+
 
 
 Route::get('/cuidado', function(){

@@ -69,10 +69,8 @@ class TestController extends Controller
      * tags={"Teste"},
      * summary="Registrar Teste",
      * security={{"apiAuth":{}}},
-     *      @OA\RequestBody(
-     *          required=true,
-     *          @OA\JsonContent(
-     *              required={"name","description"},
+     *      @OA\RequestBody(required=true,
+     *          @OA\JsonContent(required={"name","description"},
      *              @OA\Property(property="name", type="string", example="Nome"),
      *              @OA\Property(property="description", type="string", example="Descrição")
      *          )
@@ -97,21 +95,9 @@ class TestController extends Controller
      * tags={"Teste"},
      * summary="Atualizar Teste",
      * security={{"apiAuth":{}}},
-     *     @OA\Parameter(
-     *         description="ID do teste",
-     *         in="path",
-     *         name="teste",
-     *         required=true,
-     *         @OA\Schema(
-     *             format="int64",
-     *             type="integer",
-     *             example=1
-     *         )
-     *     ),
-     *      @OA\RequestBody(
-     *          required=true,
-     *          @OA\JsonContent(
-     *              required={"name","description"},
+     *   @OA\Parameter( description="ID do teste", in="path", name="teste",required=true,@OA\Schema(format="int64",type="integer",example=1)),
+     *      @OA\RequestBody( required=true,
+     *          @OA\JsonContent( required={"name","description"},
      *              @OA\Property(property="name", type="string", example="Nome"),
      *              @OA\Property(property="description", type="string", example="Descrição"),
      *          )
@@ -137,17 +123,7 @@ class TestController extends Controller
      * tags={"Teste"},
      * summary="Excluir Teste",
      * security={{"apiAuth":{}}},
-     *     @OA\Parameter(
-     *         description="ID do teste",
-     *         in="path",
-     *         name="teste",
-     *         required=true,
-     *         @OA\Schema(
-     *             format="int64",
-     *             type="integer",
-     *             example=1
-     *         )
-     *     ),
+     *     @OA\Parameter( description="ID do teste", in="path", name="teste", required=true, @OA\Schema( format="int64", type="integer", example=1)),
      *  @OA\Response(response=201, description="Teste excluido com sucesso", @OA\JsonContent()),
      *  @OA\Response(response=200, description="Teste excluido com sucesso", @OA\JsonContent()),
      *  @OA\Response(response=422, description="O servidor não entende o tipo de conteúdo da entidade de solicitação", @OA\JsonContent()),

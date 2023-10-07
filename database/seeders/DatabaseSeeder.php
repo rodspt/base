@@ -2,7 +2,9 @@
 
 namespace Database\Seeders;
 
+use App\Models\Teste;
 use App\Models\User;
+use Database\Factories\TestFactory;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -10,12 +12,7 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
         // Test user 1
-        User::factory()->create([
-            'cpf' => '03106929111',
-            'name' => 'teste',
-            'email' => 'teste@mail.com',
-            'password' => bcrypt('teste123456')
-        ]);
 
+        factory(TestFactory::class, 50)->create();
     }
 }
