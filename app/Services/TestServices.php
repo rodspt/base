@@ -2,41 +2,56 @@
 
 namespace App\Services;
 
+use App\Models\Teste as Model;
+use App\Traits\ResponseTrait;
 use App\Http\Requests\TestRequest as FormRequest;
 use App\Http\Resources\TestResource as Resource;
-use App\Models\Teste as Model;
 use App\Repositories\TestRepository as Repository;
-use App\Traits\ResponseTrait;
 
 class TestServices
 {
     use ResponseTrait;
 
+    public function __construct(
+        public Model $model
+    ){}
 
-    public function show($obj)
-    {
-        $find = Model::find($obj);
+    public function notFind(){
+        return $this->responseError(null, 'Teste não localizado');
+    }
 
-        if($find){
-
-            $resource = new Resource($find);
-            return $this->responseData($resource->colecao($find));
-
-        }else{
-            return $this->responseError(null, 'Teste não localizado');
+    public function find($id){
+        if(!is_null($id)){
+            $obj = $this->model->find($id);
+            if(is_null($obj)){
+                return false;
+            }
+            $this->model = $obj;
         }
     }
 
-    public function save(FormRequest $request, $obj = null)
+    public function show($id)
+    {
+        $find = $this->find($id);
+        if($find === false){
+            return $this->notFind();
+        }
+
+        $resource = new Resource($this->model);
+        return $this->responseData($resource->colecao($this->model));
+    }
+
+    public function save(FormRequest $request, $id = null)
     {
 
         try {
+            if(!is_null($id) && $this->find($id) === false ){
+                return $this->notFind();
+            }
 
-            $model = is_null($obj)? new Model() : Model::findOrFail($obj);
-            $strLabel = is_null($obj)? "cadastrado" : "atualizado";
-            $data = $request->validated();
-            $model->fill($data);
-            $model->save();
+            $strLabel = is_null($id)? "cadastrado" : "atualizado";
+            $this->model->fill($request->validated());
+            $this->model->save();
             return $this->responseSuccess([],"Teste {$strLabel} com sucesso");
 
         } catch (\Exception $e){
@@ -44,12 +59,14 @@ class TestServices
         }
     }
 
-    public function delete($obj)
+    public function delete($id)
     {
         try {
+            if(!is_null($id) && $this->find($id) === false ){
+                return $this->notFind();
+            }
 
-            $model = Model::findOrFail($obj);
-            $model->delete();
+            $this->model->delete();
             return $this->responseSuccess([],"Teste excluído com sucesso");
 
         } catch (\Exception $e) {
@@ -65,7 +82,6 @@ class TestServices
      */
     public function search($request)
     {
-
        $repository = new Repository();
        return new Resource($repository->search($request));
     }

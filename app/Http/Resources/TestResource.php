@@ -2,11 +2,21 @@
 
 namespace App\Http\Resources;
 
-use App\Models\Teste;
+use App\Models\Teste as Model;
 use Illuminate\Http\Resources\Json\ResourceCollection;
 
 class TestResource extends ResourceCollection
 {
+
+
+    public function colecao(Model $model){
+        return [
+            'id'        =>  $model->id,
+            'nome'      =>  $model->name,
+            'descricao' =>  $model->description,
+        ];
+    }
+
     /**
      * Transform the resource into an array.
      *
@@ -14,12 +24,8 @@ class TestResource extends ResourceCollection
      */
     public function toArray($request)
     {
-        $this->collection->transform(function(Teste $teste) {
-            return [
-                'id'      =>  $teste->id,
-                'name'      =>  $teste->name,
-                'description' =>  $teste->description,
-            ];
+        $this->collection->transform(function(Model $model) {
+            return $this->colecao($model);
         });
         return [
             'data' => $this->collection,
