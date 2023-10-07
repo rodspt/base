@@ -14,7 +14,7 @@ class TestRepository
             $data->where('name', 'ilike', "%" . trim($request->get('search')) . "%");
         }
 
-        $perPage = $request->get('perPage',  5000000);
+        $perPage = $request->get('perPage',  5);
         $data = $data->paginate( $perPage );
 
         return $data;
