@@ -25,6 +25,13 @@ Route::get('/octane', function () {
     }
 });
 
+Route::get('/cache', function () {
+    if(getenv('APP_ENV') === 'local') {
+        Artisan::call('cache:clear');
+        return "Comando 'cache:clear executado com sucesso!";
+    }
+});
+
 
 
 Route::get('/cuidado', function(){

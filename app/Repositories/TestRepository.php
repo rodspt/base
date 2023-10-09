@@ -3,20 +3,27 @@
 namespace App\Repositories;
 
 use App\Models\Teste as Model;
+use Illuminate\Support\Facades\Cache;
 
 class TestRepository
 {
     public function search($request)
     {
-        $data = Model::query();
+        $page = $request->get('page',  1);
+        $perPage = $request->get('perPage', config('app.per_page'));
+        $search = $request->get('search');
+        $search2 = $search ?? '';
+        $name = 'redis_test_search_'.$page.'_'.$perPage.'_'.strip_tags($search2);
 
-        if(!is_null($request->get('search'))){
-            $data->where('name', 'ilike', "%" . trim($request->get('search')) . "%");
-        }
+        return Cache::remember($name, 60, function () use($perPage, $page, $search) {
+           $data = Model::query();
 
-        $perPage = $request->get('perPage',  config('perPage'));
-        $data = $data->paginate( $perPage );
+           if(!is_null($search)){
+               $data->where('name', 'ilike', "%" . trim($search) . "%");
+           }
 
-        return $data;
+           return $data->paginate( $perPage );
+        });
     }
+
 }
