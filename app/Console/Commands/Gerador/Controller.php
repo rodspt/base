@@ -67,7 +67,7 @@ class %sController extends Controller
   if($arParams['auth']){
     $texto .= $s.'* security={{"apiAuth":{}}},'.$l;
   }
-  $texto .= '*  @OA\Parameter(description="Descrição do filtro", allowEmptyValue = true, in="path", name="search", required=false,
+  $texto .= $s.'*  @OA\Parameter(description="Descrição do filtro", allowEmptyValue = true, in="path", name="search", required=false,
      *       @OA\Schema(type="string", example="")),
      *  @OA\Response(response=201, description="Listagem realizada com sucesso", @OA\JsonContent()),
      *  @OA\Response(response=200, description="Listagem realizada com sucesso", @OA\JsonContent()),
