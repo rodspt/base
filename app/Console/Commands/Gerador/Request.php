@@ -99,7 +99,7 @@ use Illuminate\Validation\Rule;
                 }
                 if(isset($campo['atributos']['uniqueform'])){
                     $route = $arParams['rota'];
-                    $texto .=",". 'Rule::unique(Modal::class)->ignore($this?->'.$route.')';
+                    $texto .=",". 'Rule::unique(Model::class)->ignore($this?->'.$route.')';
                 }
 
                 $texto .= "],".$l;

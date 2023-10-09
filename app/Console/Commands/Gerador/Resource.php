@@ -22,7 +22,7 @@ namespace App\Http\Resources;
 use App\Models\%s as Model;
 use Illuminate\Http\Resources\Json\ResourceCollection;
 
-class TestResource extends ResourceCollection
+class %sResource extends ResourceCollection
 {
     public function toArray($request)
     {

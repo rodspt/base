@@ -24,6 +24,7 @@ namespace App\Http\Controllers;
 
 use App\Services\%sService as Service;
 use App\Http\Requests\%sRequest as FormRequest;
+use Illuminate\Http\Request;
 
 
 ');
@@ -75,7 +76,7 @@ class %sController extends Controller
      *  @OA\Response(response=404, description="Página não localizada"),
      * )
      */
-    public function index(FormRequest $request)
+    public function index(Request $request)
     {
         return $this->service->search($request);
     }

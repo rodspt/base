@@ -40,7 +40,11 @@ use App\Repositories\%sRepository as Repository;
 
     use ResponseTrait;
 
-    public function __construct(public Model $model){}
+    public $model;
+
+    public function __construct(Model $model){
+        $this->model = $model;
+    }
 
 ';
     }

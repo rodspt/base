@@ -38,7 +38,7 @@ class Gerador extends Command
 
 
     private function executeCrud(){
-        passthru('php artisan migrate && php artisan l5-swagger:generate && php artisan octane:reload');
+        passthru('php artisan migrate && php artisan l5-swagger:generate && php artisan cache:clear && php artisan route:cache && php artisan octane:reload');
     }
 
 
