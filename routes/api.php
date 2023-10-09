@@ -12,14 +12,12 @@ if(getenv('APP_ENV') === 'local') {
 require __DIR__ . '/auth.php';
 
 //Publicas
-Route::get('/', function () {
-    return view('welcome');
-});
+require __DIR__ . '/public.php';
 
-require __DIR__ . '/resource.php';
+
 //Rotas privadas
 Route::middleware('auth:api')->group(function () {
-
+    require __DIR__ . '/resource.php';
 });
 
 

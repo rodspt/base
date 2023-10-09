@@ -146,12 +146,17 @@ class %sController extends Controller
         $strCampos = "";
         foreach($arParams['campos'] as $campo):
            $form = '"' . $campo['form'] . '"';
-           $example = '"' . $campo['form'] . '"';
+
+           $example = $campo['typeForm'] == 'string' ?   '"' . $campo['label'] . '"' : $campo['label'];
+           $example = $campo['typeForm'] == 'integer' || $campo['typeForm'] == 'number' ?  1 : $example;
+           $example = $campo['typeForm'] == 'boolean' ?  'true' : $example;
+
+
             if($campo['visivel']){
                 if($campo['required']) {
                     $arRequired[] = $form;
                 }
-                $arCampos[] = '@OA\Property(property="'.$campo['form'].'", type="'.$campo['typeForm'].'", example="'.$campo['label'].'")';
+                $arCampos[] = '@OA\Property(property="'.$campo['form'].'", type="'.$campo['typeForm'].'", example='.$example.')';
             }
         endforeach;
         if(count($arCampos) > 0){

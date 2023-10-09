@@ -59,10 +59,10 @@ use App\Models\%s as Model;
                   $texto .= $s.$s.$s.'->orWhere('.$name.', "ilike", "%" . trim($search) . "%")';
               }
            }
-            if($cont > 0){
-                $texto .= ";".$l.$s.$s.$s.'});'.$l;
-            }
         endforeach;
+        if($cont > 0){
+            $texto .= ";".$l.$s.$s.$s.'});'.$l;
+        }
 
         $texto .= $s.$s.'}'.$l.$l;
 

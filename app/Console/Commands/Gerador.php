@@ -9,6 +9,7 @@ use App\Console\Commands\Gerador\Request;
 use App\Console\Commands\Gerador\Service;
 use App\Console\Commands\Gerador\Resource;
 use App\Console\Commands\Gerador\Controller;
+use App\Console\Commands\Gerador\Rota;
 use Illuminate\Console\Command;
 
 class Gerador extends Command
@@ -36,8 +37,8 @@ class Gerador extends Command
     }
 
 
-    private function cacheFile(){
-        passthru('php artisan cache:clear && php artisan config:clear && php cache:clear &&  composer dumpautoload -o && php artisan octane:reload');
+    private function executeCrud(){
+        passthru('php artisan migrate && php artisan l5-swagger:generate && php artisan octane:reload');
     }
 
 
@@ -274,6 +275,11 @@ class Gerador extends Command
         Controller::make($this->params);
     }
 
+    public function rota()
+    {
+        Rota::make($this->params);
+    }
+
 
 
 
@@ -295,6 +301,8 @@ class Gerador extends Command
            $this->resource();
            $this->service();
            $this->controller();
+           $this->rota();
+           $this->executeCrud();
         }
     }
 }
