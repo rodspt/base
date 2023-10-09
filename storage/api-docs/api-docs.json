@@ -554,12 +554,7 @@
                     "404": {
                         "description": "Página não localizada"
                     }
-                },
-                "security": [
-                    {
-                        "apiAuth": []
-                    }
-                ]
+                }
             }
         },
         "/teste/{teste}": {

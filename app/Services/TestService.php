@@ -8,7 +8,7 @@ use App\Http\Requests\TestRequest as FormRequest;
 use App\Http\Resources\TestResource as Resource;
 use App\Repositories\TestRepository as Repository;
 
-class TestServices
+class TestService
 {
     use ResponseTrait;
 
@@ -17,7 +17,7 @@ class TestServices
     ){}
 
     public function notFind(){
-        return $this->responseError(null, 'Teste não localizado');
+        return $this->responseError(null, 'Registro não encontrado');
     }
 
     public function find($id){
@@ -52,7 +52,7 @@ class TestServices
             $strLabel = is_null($id)? "cadastrado" : "atualizado";
             $this->model->fill($request->validated());
             $this->model->save();
-            return $this->responseSuccess([],"Teste {$strLabel} com sucesso");
+            return $this->responseSuccess([],"Registro {$strLabel} com sucesso");
 
         } catch (\Exception $e){
             return $this->responseError([], $e->getMessage());
@@ -67,7 +67,7 @@ class TestServices
             }
 
             $this->model->delete();
-            return $this->responseSuccess([],"Teste excluído com sucesso");
+            return $this->responseSuccess([],"Registro excluído com sucesso");
 
         } catch (\Exception $e) {
             return $this->responseError(null, $e->getMessage());

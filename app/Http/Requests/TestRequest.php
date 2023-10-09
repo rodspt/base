@@ -2,7 +2,7 @@
 
 namespace App\Http\Requests;
 
-use App\Models\Teste;
+use App\Models\Teste as Modal;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
@@ -36,7 +36,7 @@ class TestRequest extends FormRequest
     {
         return [
             'name' => ['string', 'max:255'],
-            'description' => ['string', 'max:255', Rule::unique(Teste::class)->ignore($this?->teste)],
+            'description' => ['string', 'max:255', Rule::unique(Modal::class)->ignore($this?->teste)],
         ];
     }
 }

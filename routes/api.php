@@ -1,48 +1,25 @@
 
 <?php
 
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
+//Dev
+if(getenv('APP_ENV') === 'local') {
+   require __DIR__ . '/local.php';
+}
 
+//Auth
+require __DIR__ . '/auth.php';
+
+//Publicas
 Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/migrate', function () {
-    if(getenv('APP_ENV') === 'local') {
-        Artisan::call('migrate:refresh', ['--seed' => true, '--force' => true]);
-        return "Comando 'migrate:refresh --seed' executado com sucesso!";
-    }
-});
-
-Route::get('/swagger', function () {
-    if(getenv('APP_ENV') === 'local') {
-        Artisan::call('l5-swagger:generate');
-        return "Comando 'l5-swagger:generate executado com sucesso!";
-    }
-});
-
-Route::get('/octane', function () {
-    if(getenv('APP_ENV') === 'local') {
-        Artisan::call('octane:reload');
-        return "Comando 'octane:reload executado com sucesso!";
-    }
-});
-
-
-
-Route::get('/cuidado', function(){
-    App\Services\Example::$values[] = rand(4,2);
-    dd(App\Services\Example::$values);
-});
-
-
-require __DIR__ . '/auth.php';
-
-
+require __DIR__ . '/resource.php';
+//Rotas privadas
 Route::middleware('auth:api')->group(function () {
-    Route::apiResource('/teste', App\Http\Controllers\TestController::class);
+
 });
 
 

@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Services\TestService as Service;
 use App\Http\Requests\TestRequest as FormRequest;
-use App\Services\TestServices as Service;
 
 class TestController extends Controller
 {
@@ -23,13 +23,13 @@ class TestController extends Controller
      * tags={"Teste"},
      * summary="Listagem de Teste",
      * security={{"apiAuth":{}}},
-     *    @OA\Parameter(description="Descrição do filtro", allowEmptyValue = true, in="path", name="search", required=false,
-     *       @OA\Schema(type="string", example="")),
-     *  @OA\Response(response=201, description="Listagem realizada com sucesso", @OA\JsonContent()),
-     *  @OA\Response(response=200, description="Listagem realizada com sucesso", @OA\JsonContent()),
-     *  @OA\Response(response=422, description="O servidor não entende o tipo de conteúdo da entidade de solicitação", @OA\JsonContent()),
-     *  @OA\Response(response=400, description="Ocoreu um erro"),
-     *  @OA\Response(response=404, description="Página não localizada"),
+     * @OA\Parameter(description="Descrição do filtro", allowEmptyValue = true, in="path", name="search", required=false,
+     *    @OA\Schema(type="string", example="")),
+     * @OA\Response(response=201, description="Listagem realizada com sucesso", @OA\JsonContent()),
+     * @OA\Response(response=200, description="Listagem realizada com sucesso", @OA\JsonContent()),
+     * @OA\Response(response=422, description="O servidor não entende o tipo de conteúdo da entidade de solicitação", @OA\JsonContent()),
+     * @OA\Response(response=400, description="Ocoreu um erro"),
+     * @OA\Response(response=404, description="Página não localizada"),
      * )
      */
     public function index(FormRequest $request)

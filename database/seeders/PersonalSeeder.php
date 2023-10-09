@@ -14,8 +14,8 @@ class PersonalSeeder extends Seeder
             try{
                 $this->callOnce($class);
                 $this->markSeederAsExecuted($nameClass);
-            } catch (\Exception) {
-                throw new Exception("Ocorreu um erro na execução do seed: $nameClass");
+            } catch (\Exception $e) {
+                throw new \Exception("Ocorreu um erro na execução do seed: $nameClass");
             }
         }
     }

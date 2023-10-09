@@ -7,21 +7,6 @@ use Illuminate\Http\Resources\Json\ResourceCollection;
 
 class TestResource extends ResourceCollection
 {
-
-
-    public function colecao(Model $model){
-        return [
-            'id'        =>  $model->id,
-            'nome'      =>  $model->name,
-            'descricao' =>  $model->description,
-        ];
-    }
-
-    /**
-     * Transform the resource into an array.
-     *
-     * @return array<string, mixed>
-     */
     public function toArray($request)
     {
         $this->collection->transform(function(Model $model) {
@@ -30,6 +15,14 @@ class TestResource extends ResourceCollection
         return [
             'data' => $this->collection,
             'total' => $this->resource->count()
+        ];
+    }
+
+    public function colecao(Model $model){
+        return [
+            'id'        =>  $model->id,
+            'nome'      =>  $model->name,
+            'descricao' =>  $model->description,
         ];
     }
 }
