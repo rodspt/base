@@ -37,41 +37,50 @@ use App\Models\%s as Model;
     {
         $search = "'search'";
         $perPage = "'perPage'";
+        $page = "'page'";
+        $app_per_page = "'per_page'";
         $s = "    ";
+        $s3 = "                    ";
+        $s2 = "                             ";
         $l = "
 ";
         $texto .= $s.'public function search($request)'.$l;
         $texto .= $s.'{'.$l.$l;
-        $texto .= $s.$s.'$search = $request->get('.$search.');'.$l;
-        $texto .= $s.$s.'$data = Model::query();'.$l.$l;
-        $texto .= $s.$s.' if(!is_null($request->get('.$search.')))'.$l;
-        $texto .= $s.$s.' {'.$l;
 
-        $cont = 0;
-        foreach($arParams['campos'] as $campo):
-            $name = "'".$campo['nome']."'";
-           if($campo['type'] == "string" || $campo['type'] == "text") {
-              if($cont == 0){
-                  $texto .= $s.$s.$s.'$data->where(function ($q) use ($search) {'.$l;
-                  $texto .= $s.$s.$s.$s.'$q->where('.$name.', "ilike", "%" . trim($search) . "%")';
-                  $cont++;
-              }else{
-                  $texto .= $s.$s.$s.'->orWhere('.$name.', "ilike", "%" . trim($search) . "%")';
-              }
-           }
-        endforeach;
+        $texto .= $s.$s.'$page = $request->get('.$page.',1);'.$l;
+        $texto .= $s.$s.'$perPage = $request->get('.$perPage.',config('.$app_per_page.'));'.$l;
+        $texto .= $s.$s.'$search = $request->get('.$search.');'.$l;
+        $texto .= $s.$s.'$search2 = $search ? $search : ""; '.$l;
+
+        $tabela = "redis_".$arParams['rota']."_search_".'".$page."_".$perPage."_".strip_tags($search2);';
+        $texto .= $s.$s.'$name = "'.$tabela.''.$l;
+
+        $texto .= $s.$s.'return Cache::remember($name, 60, function () use($perPage, $page, $search) {
+                    $data = Model::query();
+
+                    if(!is_null($search))
+                    {
+                      ';
+                            $cont = 0;
+                            foreach($arParams['campos'] as $campo):
+                                $name = "'".$campo['nome']."'";
+                               if($campo['type'] == "string" || $campo['type'] == "text") {
+                                  if($cont == 0){
+                                      $texto .= '$data->where(function ($q) use ($search) {'.$l;
+                                      $texto .= $l.$s2.'$q->where('.$name.', "ilike", "%" . trim($search) . "%")';
+                                      $cont++;
+                                  }else{
+                                      $texto .= $l.$s2.'->orWhere('.$name.', "ilike", "%" . trim($search) . "%")';
+                                  }
+                               }
+                            endforeach;
         if($cont > 0){
-            $texto .= ";".$l.$s.$s.$s.'});'.$l;
+            $texto .= ";".$l.$s3.' });'.$l;
         }
 
-        $texto .= $s.$s.'}'.$l.$l;
+        $texto .= $s3.'}'.$l.$l;
+        $texto .= $l.$s.$s."});".$l.$s."}".$l.$l."}";
 
-        $texto .= $s.$s.'$perPage = $request->get('.$perPage.',  config('.$perPage.'));
-        $data = $data->paginate( $perPage );
-
-        return $data;';
-
-        $texto .= $l.$s."}".$l."}";
         return $texto;
     }
 
