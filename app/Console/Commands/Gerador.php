@@ -51,14 +51,14 @@ class Gerador extends Command
             $this->params['nome'] = $name;
         }
 
-        $descricao = $this->ask('Informe o nome da Funcionalidade ( Ex: Teste )');
+        $descricao = $this->ask('Informe o nome da Funcionalidade ( Ex: Teste )', $name);
         if(!$descricao){
             $this->error( "\n".'O nome da funcionalidade não foi informado'. "\n");exit();
         }else{
             $this->params['descricao'] = $descricao;
         }
 
-        $rota = $this->ask('Informe a rota ( Ex: teste )');
+        $rota = $this->ask('Informe a rota ( Ex: teste )', strtolower(str_replace(' ','', $name)));
         if(!$rota){
             $this->error( "\n".'A rota da funcionalidade não foi informada'. "\n");exit();
         }else{
@@ -73,7 +73,7 @@ class Gerador extends Command
         }
 
 
-        $tabela = $this->ask('Informe o nome da tabela do banco  ( Ex: testes )');
+        $tabela = $this->ask('Informe o nome da tabela do banco  ( Ex: testes )', $rota."s");
         if(!$tabela){
             $this->error( "\n".'O nome da tabela não foi informada'. "\n");exit();
         }else{

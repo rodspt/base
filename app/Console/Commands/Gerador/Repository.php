@@ -20,6 +20,8 @@ class Repository
 namespace App\Repositories;
 
 use App\Models\%s as Model;
+use Illuminate\Support\Facades\Cache;
+
 
 ",$nome);
     }
@@ -40,7 +42,6 @@ use App\Models\%s as Model;
         $page = "'page'";
         $app_per_page = "'per_page'";
         $s = "    ";
-        $s3 = "                    ";
         $s2 = "                             ";
         $l = "
 ";
@@ -50,17 +51,17 @@ use App\Models\%s as Model;
         $texto .= $s.$s.'$page = $request->get('.$page.',1);'.$l;
         $texto .= $s.$s.'$perPage = $request->get('.$perPage.',config('.$app_per_page.'));'.$l;
         $texto .= $s.$s.'$search = $request->get('.$search.');'.$l;
-        $texto .= $s.$s.'$search2 = $search ? $search : ""; '.$l;
+        $texto .= $s.$s.'$search2 = $search ? "_".strip_tags($search) : ""; '.$l.$l;
 
-        $tabela = "redis_".$arParams['rota']."_search_".'".$page."_".$perPage."_".strip_tags($search2);';
-        $texto .= $s.$s.'$name = "'.$tabela.''.$l;
+        $tabela = "redis_".$arParams['rota']."_search_".'".$page."_".$perPage.$search2;';
+        $texto .= $s.$s.'$name = "'.$tabela.$l;
 
         $texto .= $s.$s.'return Cache::remember($name, 60, function () use($perPage, $page, $search) {
-                    $data = Model::query();
+            $data = Model::query();
 
-                    if(!is_null($search))
-                    {
-                      ';
+              if(!is_null($search))
+               {
+                    ';
                             $cont = 0;
                             foreach($arParams['campos'] as $campo):
                                 $name = "'".$campo['nome']."'";
@@ -68,18 +69,27 @@ use App\Models\%s as Model;
                                   if($cont == 0){
                                       $texto .= '$data->where(function ($q) use ($search) {'.$l;
                                       $texto .= $l.$s2.'$q->where('.$name.', "ilike", "%" . trim($search) . "%")';
-                                      $cont++;
                                   }else{
                                       $texto .= $l.$s2.'->orWhere('.$name.', "ilike", "%" . trim($search) . "%")';
                                   }
+                                   $cont++;
                                }
                             endforeach;
+
         if($cont > 0){
-            $texto .= ";".$l.$s3.' });'.$l;
+            $texto .= ";".$l.'                     });'.$l;
         }
 
-        $texto .= $s3.'}'.$l.$l;
-        $texto .= $l.$s.$s."});".$l.$s."}".$l.$l."}";
+        $texto .= '
+                }
+
+              return $data->paginate( $perPage );
+
+         });
+
+    }
+
+}';
 
         return $texto;
     }
