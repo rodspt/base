@@ -34,6 +34,8 @@ class TestService extends ModelService
             $strLabel = is_null($id)? "cadastrado" : "atualizado";
             $this->model->fill($request->validated());
             $this->model->save();
+            $this->clearCache($this->model, $id);
+
             return $this->responseSuccess([],"Registro {$strLabel} com sucesso");
 
         } catch (\Exception $e){

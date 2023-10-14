@@ -41,14 +41,16 @@ class %sResource extends ResourceCollection
 
     public static function colecao($arParams, $texto)
     {
+        $id = "'" . $arParams['id'] . "'";
         $s = "   ";
         $l = "
 ";
         $texto .= $s.'public function colecao(Model $model)
     {
         return ['.$l;
-
+             $texto .= "         ".$id . ' => $model->'. $arParams['id'] . "," . $l;
         foreach($arParams['campos'] as $campo):
+
             if($campo['visivel']) {
                 $form = "'" . $campo['form'] . "'";
                 $nome =  $campo['nome'];

@@ -20,6 +20,7 @@ class Repository
 namespace App\Repositories;
 
 use App\Models\%s as Model;
+use App\Traits\SearchTrait;
 use Illuminate\Support\Facades\Cache;
 
 
@@ -32,6 +33,8 @@ use Illuminate\Support\Facades\Cache;
         return $texto."class {$nome}Repository
 {
 
+     use SearchTrait;
+
 ";
     }
 
@@ -40,7 +43,7 @@ use Illuminate\Support\Facades\Cache;
         $search = "'search'";
         $perPage = "'perPage'";
         $page = "'page'";
-        $app_per_page = "'per_page'";
+        $app_per_page = "'app.per_page'";
         $s = "    ";
         $s2 = "                             ";
         $l = "
@@ -50,13 +53,11 @@ use Illuminate\Support\Facades\Cache;
 
         $texto .= $s.$s.'$page = $request->get('.$page.',1);'.$l;
         $texto .= $s.$s.'$perPage = $request->get('.$perPage.',config('.$app_per_page.'));'.$l;
-        $texto .= $s.$s.'$search = $request->get('.$search.');'.$l;
-        $texto .= $s.$s.'$search2 = $search ? "_".strip_tags($search) : ""; '.$l.$l;
+        $texto .= $s.$s.'$search = $this->filtroSearch($request->get('.$search.'));'.$l;
+        $texto .= $s.$s.'$nameCache = $this->cacheSearch(Model::class, $perPage, $page, $search);'.$l.$l;
 
-        $tabela = "redis_".$arParams['rota']."_search_".'".$page."_".$perPage.$search2;';
-        $texto .= $s.$s.'$name = "'.$tabela.$l;
 
-        $texto .= $s.$s.'return Cache::remember($name, 60, function () use($perPage, $page, $search) {
+        $texto .= $s.$s.'return Cache::remember($nameCache, 60, function () use($search, $request, $perPage,  $page) {
             $data = Model::query();
 
               if(!is_null($search))
@@ -65,8 +66,8 @@ use Illuminate\Support\Facades\Cache;
                             $cont = 0;
                             foreach($arParams['campos'] as $campo):
                                 $name = "'".$campo['nome']."'";
-                               if($campo['type'] == "string" || $campo['type'] == "text") {
-                                  if($cont == 0){
+                               if($campo['type'] === "string" || $campo['type'] === "text") {
+                                  if($cont === 0){
                                       $texto .= '$data->where(function ($q) use ($search) {'.$l;
                                       $texto .= $l.$s2.'$q->where('.$name.', "ilike", "%" . trim($search) . "%")';
                                   }else{

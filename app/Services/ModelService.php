@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Traits\ResponseTrait;
+use Illuminate\Support\Facades\Cache;
 
 class ModelService
 {
@@ -18,18 +19,41 @@ class ModelService
         $this->resource = $resource;
     }
 
-    public function notFind(){
+    public function notFind()
+    {
         return $this->responseError(null, 'Registro não encontrado');
     }
 
-    public function find($id){
-        if(!is_null($id)){
-            $obj = $this->model->find($id);
+    public function find($id)
+    {
+
+        if(!is_null($id))
+        {
+            $nameCache = class_basename($this->model)."_".$id;
+            $obj =  Cache::remember($nameCache, 30, function () use($id) {
+                return $this->model->find($id);
+            });
+
             if(is_null($obj)){
                 return false;
+            }else{
+                $this->model = $obj;
             }
-            $this->model = $obj;
         }
+    }
+
+    public function clearCache($classe, $id = null)
+    {
+        if(!is_null($id)){
+            $nameCache = class_basename($classe)."_".$id;
+            Cache::forget($nameCache);
+        }else{
+            $classe = class_basename($classe);
+            $perPage = config('app.per_page');
+            $nameCache = $classe."_search_1_".$perPage;
+            Cache::forget($nameCache);
+        }
+
     }
 
     public function show($id)
@@ -51,6 +75,9 @@ class ModelService
             }
 
             $this->model->delete();
+            $this->clearCache($this->model, $id);
+            $this->clearCache($this->model, null);
+
             return $this->responseSuccess([],"Registro excluído com sucesso");
 
         } catch (\Exception $e) {

@@ -70,14 +70,17 @@ use App\Traits\ResponseTrait;
             $modelo = $this->model;
             $arDados = $request->validated();
             '.$l;
-            foreach($arParms['campos'] as $campo):
-              if($campo['visivel']) {
-                  $form = "'" . $campo['form'] . "'";
-                  $texto .= $s . '$modelo->' . $campo['nome'] . ' = $arDados[' . $form . '];' . $l;
-              }
-            endforeach;
-              $texto .= $s.'$modelo->save();'.$l.$l;
-              $texto .= $s.'return $this->responseSuccess([],"Registro {$strLabel} com sucesso");;
+        foreach($arParms['campos'] as $campo):
+            if($campo['visivel']) {
+                $form = "'" . $campo['form'] . "'";
+                $texto .= $s . '$modelo->' . $campo['nome'] . ' = $arDados[' . $form . '];' . $l;
+            }
+        endforeach;
+
+        $texto .= $s.'$modelo->save();'.$l.$l;
+        $texto .= $s.'$this->clearCache($this->model, $id);'.$l.$l;
+
+        $texto .= $s.'return $this->responseSuccess([],"Registro {$strLabel} com sucesso");;
 
         } catch (\Exception $e){
             return $this->responseError([], $e->getMessage());

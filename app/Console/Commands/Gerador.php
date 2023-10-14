@@ -98,7 +98,7 @@ class Gerador extends Command
         }
 
 
-        $comentario = $this->ask('Informe um comentário para a coluna do banco');
+        $comentario = $this->ask('Informe um comentário para a coluna do banco', ucfirst($campo));
         if(!$comentario) {
             $this->error("\n" . "O comentário da coluna não foi informado" . "\n");exit();
         }
@@ -281,6 +281,16 @@ class Gerador extends Command
     }
 
 
+    public function sucessoNovo()
+    {
+        $this->warn("======================= SUCESSO ================================");
+        $novo = $this->ask('Deseja criar um novo crud ?  S - Sim ou N - Não','N');
+        $this->warn("===================================================================");
+        if($novo == 'S'){
+            passthru('clear');
+            $this->handle();
+        }
+    }
 
 
     /**
@@ -303,6 +313,7 @@ class Gerador extends Command
            $this->controller();
            $this->rota();
            $this->executeCrud();
+           $this->SucessoNovo();
         }
     }
 }
