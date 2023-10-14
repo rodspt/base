@@ -104,7 +104,7 @@ class %sController extends Controller
      if($arParams['auth']){
          $texto .= $s.'* security={{"apiAuth":{}}},'.$l;
      }
-   $texto .= $s.'*    @OA\Parameter(description="Id", in="path", name="'.$rota.'",@OA\Schema(format="int64", type="integer", example="1")),
+   $texto .= $s.'*    @OA\Parameter(description="Id", in="path", required=true, name="'.$rota.'",@OA\Schema(format="int64", type="integer", example=1)),
      *  @OA\Response(response=201, description="Busca realizada com sucesso", @OA\JsonContent()),
      *  @OA\Response(response=200, description="Busca realizada com sucesso", @OA\JsonContent()),
      *  @OA\Response(response=422, description="O servidor não entende o tipo de conteúdo da entidade de solicitação", @OA\JsonContent()),

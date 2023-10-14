@@ -27,7 +27,7 @@ class ModelService
     public function find($id)
     {
 
-        if(!is_null($id))
+        if(!is_null($id) && is_numeric($id))
         {
             $nameCache = class_basename($this->model)."_".$id;
             $obj =  Cache::remember($nameCache, 30, function () use($id) {
@@ -39,6 +39,8 @@ class ModelService
             }else{
                 $this->model = $obj;
             }
+        }else{
+            return false;
         }
     }
 
