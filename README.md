@@ -22,4 +22,8 @@
 
 4) php artisan jwt:secret
 
-5) php artisan octane:start ou  octane:reload
+5) Caso queria usar o gerador de crud:   php artisan my:generator
+   
+6) Caso seja criado uma nova rota:  php artisan l5-swagger:generate  
+
+7) Como é usado o octane para otimização é necessário realizar um refresh a cada alteração:  php artisan octane:reload 
