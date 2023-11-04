@@ -173,6 +173,8 @@ return [
         App\Providers\RouteServiceProvider::class,
         App\Providers\TelescopeServiceProvider::class,
         L5Swagger\L5SwaggerServiceProvider::class,
+        Barryvdh\Debugbar\ServiceProvider::class,
+        Maatwebsite\Excel\ExcelServiceProvider::class,
     ])->toArray(),
 
     /*
@@ -187,7 +189,13 @@ return [
     */
 
     'aliases' => Facade::defaultAliases()->merge([
-        // 'Example' => App\Facades\Example::class,
+    	'Auth' => Illuminate\Support\Facades\Auth::class,
+ 	'Cache' => Illuminate\Support\Facades\Cache::class,
+	'Cookie' => Illuminate\Support\Facades\Cookie::class,
+	'Debugbar' => Barryvdh\Debugbar\Facades\Debugbar::class,
+       	'Excel' => Maatwebsite\Excel\Facades\Excel::class,
+	'Request' => Illuminate\Support\Facades\Request::class,
+        'Response' => Illuminate\Support\Facades\Response::class,
     ])->toArray(),
 
 ];
