@@ -1,21 +1,20 @@
 <?php
 
-namespace App\Http\Requests;
+namespace App\Http\Requests\Auth;
 
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Validation\Rules\Password;
+use Illuminate\Validation\Rule;
 
-class LoginUserRequest extends FormRequest
+class AuthVerifyEmailRequest extends FormRequest
 {
-
     /**
      * Traduz o nome da coluna no banco para o nome de exibição no request
      */
     public function attributes()
     {
         return [
-            'cpf' => 'cpf',
-            'password' => 'senha',
+            'id' => 'cpf',
+            'hash' => 'hash'
         ];
     }
 
@@ -34,10 +33,11 @@ class LoginUserRequest extends FormRequest
      */
     public function rules(): array
     {
-
         return [
-            'cpf' => "required|min:11|max:11|unique:users,cpf",
-            'password' => ['required', Password::defaults()],
+            'cpf' => ['cpf','min:11','max:11',Rule::exists('users','cpf')],
+            'hash' => ['string','min:15', 'max:500'],
+            'expires' => ['string','min:10', 'max:10'],
+            'signature' => ['string','min:50', 'max:100'],
         ];
     }
 }

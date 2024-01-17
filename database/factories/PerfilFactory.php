@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Teste>
  */
-class TesteFactory extends Factory
+class PerfilFactory extends Factory
 {
     /**
      * Define the model's default state.
@@ -19,6 +19,7 @@ class TesteFactory extends Factory
         return [
             'name' => fake()->name(),
             'description' => fake()->name(),
+            'hide' => false,
         ];
     }
 }

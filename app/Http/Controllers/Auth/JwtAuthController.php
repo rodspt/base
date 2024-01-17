@@ -2,17 +2,12 @@
 
 namespace App\Http\Controllers\Auth;
 
+use App\DTO\Auth\AuthDTO;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\CreateUserRequest;
-use App\Http\Resources\UserResource;
-use App\Models\User;
+use App\Http\Requests\Auth\AuthRequest;
+use App\Services\AuthService;
 use App\Traits\ResponseTrait;
-use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
-use Illuminate\Http\Response;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Hash;
 
 class JwtAuthController extends Controller
 {
@@ -21,55 +16,14 @@ class JwtAuthController extends Controller
      */
     use ResponseTrait;
 
-     /**
-     * @OA\Post(
-     * path="/register",
-     * operationId="register",
-     * tags={"register"},
-     * tags={"Login"},
-     * summary="Criar usuário",
-     *  @OA\RequestBody(
-     *       required=true,
-     *       @OA\JsonContent(
-     *           required={"cpf","name","email","password","password_confirmation"},
-	 *           @OA\Property(property="cpf", type="string", example="00000000191"),
-	 *           @OA\Property(property="name", type="string", example="teste"),
-     *           @OA\Property(property="email", type="string", example="teste@mail.com"),
-     *           @OA\Property(property="password", type="string", example="teste123456"),
-     *           @OA\Property(property="password_confirmation", type="string", example="teste123456")
-     *        )
-     *    ),
-     *  @OA\Response(response=201, description="Login criado com sucesso", @OA\JsonContent()),
-     *  @OA\Response(response=200, description="Login criado com sucesso", @OA\JsonContent()),
-     *  @OA\Response(response=422, description="O servidor não entende o tipo de conteúdo da entidade de solicitação", @OA\JsonContent()),
-     *  @OA\Response(response=400, description="Ocoreu um erro"),
-     *  @OA\Response(response=404, description="Página não localizada"),
-     * )
-     */
-    public function register(CreateUserRequest $request): JsonResponse
-    {
-
-        try {
-            $user = new User();
-            $data = $request->validated();
-            $data['passwrod'] = Hash::make($request->password);
-            $user->fill($request->validated());
-            $user->save();
-            event(new Registered($user));
-
-            return $this->responseSuccess([],'Usuário criado com sucesso');
-        } catch (\Exception $e){
-            return $this->responseError([], $e->getMessage(), JsonResponse::HTTP_BAD_REQUEST);
-        }
-
-    }
+    public function __construct(private AuthService $authService)
+    {}
 
      /**
      * @OA\Post(
      * path="/login",
      * operationId="login",
-     * tags={"login"},
-     * tags={"Login"},
+     * tags={"Autenticação"},
      * summary="Realizar autenticação",
      *  @OA\RequestBody(
      *       required=true,
@@ -86,37 +40,18 @@ class JwtAuthController extends Controller
      *  @OA\Response(response=404, description="Página não localizada"),
      * )
      */
-    public function login(Request $request): JsonResponse
+    public function login(AuthRequest $request): JsonResponse
     {
-        $request->validate([
-            'cpf' => ['required', 'string'],
-            'password' => ['required', 'string']
-        ]);
-
-        $credentials = $request->only(['cpf', 'password']);
-
-        $token = Auth::attempt($credentials);
-
-
-        if (!$token) {
-            return response()->json([
-                'message' => 'O usuário não existe ou a credencial é inválida'
-            ], 401);
-        }
-
-        $data = User::find($request->cpf);
-        return response()->json([
-            'user' => new UserResource($data),
-            'access_token' => $token,
-        ]);
+       $retorno = $this->authService->auth(new AuthDTO(... $request->validated()));
+       return $this->responseData($retorno['message']?? $retorno, $retorno['code'] ?? 200);
     }
 
      /**
      * @OA\Post(
      * path="/logout",
      * operationId="logout",
-     * tags={"logout"},
-     * tags={"Login"},
+     * tags={"Autenticação"},
+     * security={{"apiAuth":{}}},
      * summary="Realiza Logout",
      *  @OA\Response(response=201, description="Logout realizado com sucesso", @OA\JsonContent()),
      *  @OA\Response(response=200, description="Logout realizado com sucesso", @OA\JsonContent()),
@@ -125,19 +60,20 @@ class JwtAuthController extends Controller
      *  @OA\Response(response=404, description="Página não localizada"),
      * )
      */
-    public function logout(): Response
+    public function logout(): JsonResponse
     {
-        Auth::logout();
-
-        return response()->noContent();
+        if(auth()->user()){
+            auth()->logout();
+            return response()->json(['message' => 'Logout realizado'],200);
+        }
+        return response()->json(['message' => 'Você não está logado'],401);
     }
 
     /**
      * @OA\Post(
      * path="/refresh",
      * operationId="refresh",
-     * tags={"refresh"},
-     * tags={"Login"},
+     * tags={"Autenticação"},
      * summary="Realiza RefreshToken",
      * security={{"apiAuth":{}}},
      *  @OA\Response(response=201, description="RefreshToken realizado com sucesso", @OA\JsonContent()),
@@ -149,7 +85,7 @@ class JwtAuthController extends Controller
      */
     public function refresh(): JsonResponse
     {
-        $token = Auth::refresh();
+        $token = auth()->refresh();
 
         return response()->json([
             'access_token' => $token,

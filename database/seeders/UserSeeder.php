@@ -3,8 +3,10 @@
 namespace Database\Seeders;
 
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Database\Seeder;
 
+use Faker\Provider\pt_BR\Person;
 class UserSeeder extends Seeder
 {
     /**
@@ -12,11 +14,15 @@ class UserSeeder extends Seeder
      */
     public function run(): void
     {
+        $cpf =  '00000000191';
         User::factory()->create([
-            'cpf' => '03106929111',
+            'cpf' => $cpf,
             'name' => 'teste',
             'email' => 'teste@mail.com',
-            'password' => bcrypt('teste123456')
+            'perfil_id' => 1,
+            'password' => bcrypt('teste123456'),
+            'cpf_aprovacao' => $cpf,
+            'aprovacao_at' => Carbon::now()
         ]);
     }
 }

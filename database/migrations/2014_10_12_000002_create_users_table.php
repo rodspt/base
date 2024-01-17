@@ -15,10 +15,17 @@ return new class extends Migration
             $table->string('cpf',11)->primary()->unique()->comment('CPF do usuário');
             $table->string('name')->comment('Nome do usuário');
             $table->string('email')->unique()->comment('Email do usuário');
-            $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
-            $table->rememberToken();
+
+            $table->integer('perfil_id');
+            $table->foreign('perfil_id')->references('id')->on('perfis')->onDelete('cascade');
+
+            $table->timestamp('email_verified_at')->nullable();
+            $table->string('cpf_aprovacao',11)->nullable()->comment('CPF do autorizador');
+            $table->string('cpf_bloqueio',11)->nullable()->comment('CPF do bloqueio');
+            $table->timestamp('aprovacao_at')->nullable()->comment('Data de aprovação');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

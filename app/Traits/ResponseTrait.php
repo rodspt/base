@@ -15,7 +15,7 @@ trait ResponseTrait
      * @param object $data
      * @return JsonResponse
      */
-    public function responseData($data = [], $status_code = JsonResponse::HTTP_OK)
+    public function responseData($data = [], $status_code = JsonResponse::HTTP_OK) : JsonResponse
     {
         return response()->json($data, $status_code);
     }

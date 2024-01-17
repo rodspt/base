@@ -14,95 +14,15 @@
     },
     "servers": [
         {
-            "url": "http://localhost",
+            "url": "http://localhost:8000",
             "description": "Base API"
         }
     ],
     "paths": {
-        "/register": {
-            "post": {
-                "tags": [
-                    "Login"
-                ],
-                "summary": "Criar usuário",
-                "operationId": "register",
-                "requestBody": {
-                    "required": true,
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "required": [
-                                    "cpf",
-                                    "name",
-                                    "email",
-                                    "password",
-                                    "password_confirmation"
-                                ],
-                                "properties": {
-                                    "cpf": {
-                                        "type": "string",
-                                        "example": "00000000191"
-                                    },
-                                    "name": {
-                                        "type": "string",
-                                        "example": "teste"
-                                    },
-                                    "email": {
-                                        "type": "string",
-                                        "example": "teste@mail.com"
-                                    },
-                                    "password": {
-                                        "type": "string",
-                                        "example": "teste123456"
-                                    },
-                                    "password_confirmation": {
-                                        "type": "string",
-                                        "example": "teste123456"
-                                    }
-                                },
-                                "type": "object"
-                            }
-                        }
-                    }
-                },
-                "responses": {
-                    "201": {
-                        "description": "Login criado com sucesso",
-                        "content": {
-                            "application/json": {
-                                "schema": {}
-                            }
-                        }
-                    },
-                    "200": {
-                        "description": "Login criado com sucesso",
-                        "content": {
-                            "application/json": {
-                                "schema": {}
-                            }
-                        }
-                    },
-                    "422": {
-                        "description": "O servidor não entende o tipo de conteúdo da entidade de solicitação",
-                        "content": {
-                            "application/json": {
-                                "schema": {}
-                            }
-                        }
-                    },
-                    "400": {
-                        "description": "Ocoreu um erro"
-                    },
-                    "404": {
-                        "description": "Página não localizada"
-                    }
-                }
-            }
-        },
         "/login": {
             "post": {
                 "tags": [
-                    "Login"
+                    "Autenticação"
                 ],
                 "summary": "Realizar autenticação",
                 "operationId": "login",
@@ -167,7 +87,7 @@
         "/logout": {
             "post": {
                 "tags": [
-                    "Login"
+                    "Autenticação"
                 ],
                 "summary": "Realiza Logout",
                 "operationId": "logout",
@@ -202,13 +122,18 @@
                     "404": {
                         "description": "Página não localizada"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "apiAuth": []
+                    }
+                ]
             }
         },
         "/refresh": {
             "post": {
                 "tags": [
-                    "Login"
+                    "Autenticação"
                 ],
                 "summary": "Realiza RefreshToken",
                 "operationId": "refresh",
@@ -254,9 +179,9 @@
         "/reset-password": {
             "post": {
                 "tags": [
-                    "Login"
+                    "Autenticação"
                 ],
-                "summary": "Resetar senha",
+                "summary": "Resetar senha - É necessário o token enviado por e-mail",
                 "operationId": "reset-password",
                 "requestBody": {
                     "required": true,
@@ -272,10 +197,12 @@
                                 ],
                                 "properties": {
                                     "cpf": {
-                                        "type": "string"
+                                        "type": "string",
+                                        "example": "00000000191"
                                     },
                                     "token": {
-                                        "type": "string"
+                                        "type": "string",
+                                        "example": "token-email"
                                     },
                                     "email": {
                                         "type": "string",
@@ -326,47 +253,6 @@
                     "404": {
                         "description": "Página não localizada"
                     }
-                }
-            }
-        },
-        "/email/verification-notification": {
-            "post": {
-                "tags": [
-                    "Login"
-                ],
-                "summary": "Reenviar e-mail de verificação",
-                "operationId": "verification-notification",
-                "responses": {
-                    "201": {
-                        "description": "Reenviado email de notificação com sucesso",
-                        "content": {
-                            "application/json": {
-                                "schema": {}
-                            }
-                        }
-                    },
-                    "200": {
-                        "description": "Reenviado email de notificação com sucesso",
-                        "content": {
-                            "application/json": {
-                                "schema": {}
-                            }
-                        }
-                    },
-                    "422": {
-                        "description": "O servidor não entende o tipo de conteúdo da entidade de solicitação",
-                        "content": {
-                            "application/json": {
-                                "schema": {}
-                            }
-                        }
-                    },
-                    "400": {
-                        "description": "Ocoreu um erro"
-                    },
-                    "404": {
-                        "description": "Página não localizada"
-                    }
                 },
                 "security": [
                     {
@@ -378,9 +264,9 @@
         "/forgot-password": {
             "post": {
                 "tags": [
-                    "Login"
+                    "Autenticação"
                 ],
-                "summary": "Recuperar senha",
+                "summary": "Envia o e-mail de recuperação com o token de recuperação",
                 "operationId": "forgot-password",
                 "requestBody": {
                     "required": true,
@@ -438,7 +324,7 @@
         "/verify-email/{id}/{hash}": {
             "get": {
                 "tags": [
-                    "Login"
+                    "Autenticação"
                 ],
                 "summary": "Confirmação de Verificação de E-mail",
                 "operationId": "verify-email",
@@ -503,16 +389,38 @@
                 ]
             }
         },
-        "/teste?search={search}": {
+        "/perfis?totalPerPage={totalPerPage}&page={page}&filter={filter}": {
             "get": {
                 "tags": [
-                    "Teste"
+                    "Permissão"
                 ],
-                "summary": "Listagem de Teste",
-                "operationId": "listarTest",
+                "summary": "Listagem de perfis",
+                "operationId": "listPerfis",
                 "parameters": [
                     {
-                        "name": "search",
+                        "name": "totalPerPage",
+                        "in": "path",
+                        "description": "Total de items por página",
+                        "required": false,
+                        "allowEmptyValue": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": 15
+                        }
+                    },
+                    {
+                        "name": "page",
+                        "in": "path",
+                        "description": "Número da página",
+                        "required": false,
+                        "allowEmptyValue": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": 1
+                        }
+                    },
+                    {
+                        "name": "filter",
                         "in": "path",
                         "description": "Descrição do filtro",
                         "required": false,
@@ -562,18 +470,314 @@
                 ]
             }
         },
-        "/teste/{teste}": {
+        "/perfis/{perfi}": {
             "get": {
                 "tags": [
-                    "Teste"
+                    "Permissão"
                 ],
-                "summary": "Buscar Teste",
-                "operationId": "buscarTeste",
+                "summary": "Buscar Perfil",
+                "operationId": "buscarPerfil",
                 "parameters": [
                     {
-                        "name": "teste",
+                        "name": "perfi",
                         "in": "path",
-                        "description": "Id do Teste",
+                        "description": "Id da rota",
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64",
+                            "example": "2"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Busca realizada com sucesso",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    },
+                    "200": {
+                        "description": "Busca realizada com sucesso",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "O servidor não entende o tipo de conteúdo da entidade de solicitação",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Ocoreu um erro"
+                    },
+                    "404": {
+                        "description": "Página não localizada"
+                    }
+                },
+                "security": [
+                    {
+                        "apiAuth": []
+                    }
+                ]
+            },
+            "put": {
+                "tags": [
+                    "Permissão"
+                ],
+                "summary": "Atualizar Perfil",
+                "operationId": "updatePerfil",
+                "parameters": [
+                    {
+                        "name": "perfi",
+                        "in": "path",
+                        "description": "ID do perfil",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64",
+                            "example": 2
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "nome"
+                                ],
+                                "properties": {
+                                    "nome": {
+                                        "type": "string",
+                                        "example": "Acao"
+                                    },
+                                    "atividades": {
+                                        "type": "array",
+                                        "items": {
+                                            "properties": {
+                                                "id": {
+                                                    "type": "integer"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Ação excluida com sucesso",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    },
+                    "200": {
+                        "description": "Ação excluida com sucesso",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "O servidor não entende o tipo de conteúdo da entidade de solicitação",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Ocoreu um erro"
+                    },
+                    "404": {
+                        "description": "Página não localizada"
+                    }
+                },
+                "security": [
+                    {
+                        "apiAuth": []
+                    }
+                ]
+            }
+        },
+        "/perfis": {
+            "post": {
+                "tags": [
+                    "Permissão"
+                ],
+                "summary": "Criar perfil",
+                "operationId": "storePerfil",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "name",
+                                    "description"
+                                ],
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "example": "Nome do Perfil"
+                                    },
+                                    "description": {
+                                        "type": "string",
+                                        "example": "Descrição do Perfil"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Perfil criado com sucesso",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    },
+                    "200": {
+                        "description": "Perfil criado com sucesso",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "O servidor não entende o tipo de conteúdo da entidade de solicitação",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Ocoreu um erro"
+                    },
+                    "404": {
+                        "description": "Página não localizada"
+                    }
+                },
+                "security": [
+                    {
+                        "apiAuth": []
+                    }
+                ]
+            }
+        },
+        "/routes?totalPerPage={totalPerPage}&page={page}&filter={filter}": {
+            "get": {
+                "tags": [
+                    "Permissão"
+                ],
+                "summary": "Listagem de rotas",
+                "operationId": "listRotas",
+                "parameters": [
+                    {
+                        "name": "totalPerPage",
+                        "in": "path",
+                        "description": "Total de items por página",
+                        "required": false,
+                        "allowEmptyValue": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": 15
+                        }
+                    },
+                    {
+                        "name": "page",
+                        "in": "path",
+                        "description": "Número da página",
+                        "required": false,
+                        "allowEmptyValue": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": 1
+                        }
+                    },
+                    {
+                        "name": "filter",
+                        "in": "path",
+                        "description": "Descrição do filtro",
+                        "required": false,
+                        "allowEmptyValue": true,
+                        "schema": {
+                            "type": "string",
+                            "example": ""
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Listagem realizada com sucesso",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    },
+                    "200": {
+                        "description": "Listagem realizada com sucesso",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "O servidor não entende o tipo de conteúdo da entidade de solicitação",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Ocoreu um erro"
+                    },
+                    "404": {
+                        "description": "Página não localizada"
+                    }
+                },
+                "security": [
+                    {
+                        "apiAuth": []
+                    }
+                ]
+            }
+        },
+        "/routes/{route}": {
+            "get": {
+                "tags": [
+                    "Permissão"
+                ],
+                "summary": "Buscar Rota",
+                "operationId": "buscarRota",
+                "parameters": [
+                    {
+                        "name": "route",
+                        "in": "path",
+                        "description": "Id da rota",
                         "schema": {
                             "type": "integer",
                             "format": "int64",
@@ -618,26 +822,15 @@
                         "apiAuth": []
                     }
                 ]
-            },
-            "put": {
+            }
+        },
+        "/routes": {
+            "post": {
                 "tags": [
-                    "Teste"
+                    "Permissão"
                 ],
-                "summary": "Atualizar Teste",
-                "operationId": "updateTeste",
-                "parameters": [
-                    {
-                        "name": "teste",
-                        "in": "path",
-                        "description": "ID do teste",
-                        "required": true,
-                        "schema": {
-                            "type": "integer",
-                            "format": "int64",
-                            "example": 1
-                        }
-                    }
-                ],
+                "summary": "Criar rota",
+                "operationId": "storeRoute",
                 "requestBody": {
                     "required": true,
                     "content": {
@@ -650,11 +843,11 @@
                                 "properties": {
                                     "name": {
                                         "type": "string",
-                                        "example": "Nome"
+                                        "example": "test.store"
                                     },
                                     "description": {
                                         "type": "string",
-                                        "example": "Descrição"
+                                        "example": "Registrar rota"
                                     }
                                 },
                                 "type": "object"
@@ -664,7 +857,7 @@
                 },
                 "responses": {
                     "201": {
-                        "description": "Teste excluido com sucesso",
+                        "description": "Rota criado com sucesso",
                         "content": {
                             "application/json": {
                                 "schema": {}
@@ -672,64 +865,7 @@
                         }
                     },
                     "200": {
-                        "description": "Teste excluido com sucesso",
-                        "content": {
-                            "application/json": {
-                                "schema": {}
-                            }
-                        }
-                    },
-                    "422": {
-                        "description": "O servidor não entende o tipo de conteúdo da entidade de solicitação",
-                        "content": {
-                            "application/json": {
-                                "schema": {}
-                            }
-                        }
-                    },
-                    "400": {
-                        "description": "Ocoreu um erro"
-                    },
-                    "404": {
-                        "description": "Página não localizada"
-                    }
-                },
-                "security": [
-                    {
-                        "apiAuth": []
-                    }
-                ]
-            },
-            "delete": {
-                "tags": [
-                    "Teste"
-                ],
-                "summary": "Excluir Teste",
-                "operationId": "excluirTeste",
-                "parameters": [
-                    {
-                        "name": "teste",
-                        "in": "path",
-                        "description": "ID do teste",
-                        "required": true,
-                        "schema": {
-                            "type": "integer",
-                            "format": "int64",
-                            "example": 1
-                        }
-                    }
-                ],
-                "responses": {
-                    "201": {
-                        "description": "Teste excluido com sucesso",
-                        "content": {
-                            "application/json": {
-                                "schema": {}
-                            }
-                        }
-                    },
-                    "200": {
-                        "description": "Teste excluido com sucesso",
+                        "description": "Rota criado com sucesso",
                         "content": {
                             "application/json": {
                                 "schema": {}
@@ -758,30 +894,39 @@
                 ]
             }
         },
-        "/teste": {
+        "/permissions/{perfil}": {
             "post": {
                 "tags": [
-                    "Teste"
+                    "Permissão"
                 ],
-                "summary": "Registrar Teste",
-                "operationId": "registerTeste",
+                "summary": "Atribuir perfis a rota",
+                "operationId": "storePermission",
+                "parameters": [
+                    {
+                        "name": "perfil",
+                        "in": "path",
+                        "description": "ID da rota",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64",
+                            "example": 1
+                        }
+                    }
+                ],
                 "requestBody": {
-                    "required": true,
                     "content": {
                         "application/json": {
                             "schema": {
                                 "required": [
-                                    "name",
-                                    "description"
+                                    "routes"
                                 ],
                                 "properties": {
-                                    "name": {
-                                        "type": "string",
-                                        "example": "Nome"
-                                    },
-                                    "description": {
-                                        "type": "string",
-                                        "example": "Descrição"
+                                    "routes": {
+                                        "type": "array",
+                                        "items": {
+                                            "type": "integer"
+                                        }
                                     }
                                 },
                                 "type": "object"
@@ -791,7 +936,7 @@
                 },
                 "responses": {
                     "201": {
-                        "description": "Teste cadastrado com sucesso",
+                        "description": "Rota criado com sucesso",
                         "content": {
                             "application/json": {
                                 "schema": {}
@@ -799,7 +944,298 @@
                         }
                     },
                     "200": {
-                        "description": "Teste cadastrado com sucesso",
+                        "description": "Rota criado com sucesso",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "O servidor não entende o tipo de conteúdo da entidade de solicitação",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Ocoreu um erro"
+                    },
+                    "404": {
+                        "description": "Página não localizada"
+                    }
+                },
+                "security": [
+                    {
+                        "apiAuth": []
+                    }
+                ]
+            }
+        },
+        "/solicitar": {
+            "post": {
+                "tags": [
+                    "Usuário"
+                ],
+                "summary": "Solicitar acesso",
+                "operationId": "solicitar",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "cpf",
+                                    "name",
+                                    "email",
+                                    "perfil_id",
+                                    "password",
+                                    "password_confirmation"
+                                ],
+                                "properties": {
+                                    "cpf": {
+                                        "type": "string",
+                                        "example": "00000000191"
+                                    },
+                                    "name": {
+                                        "type": "string",
+                                        "example": "teste"
+                                    },
+                                    "email": {
+                                        "type": "string",
+                                        "example": "teste@mail.com"
+                                    },
+                                    "perfil_id": {
+                                        "type": "integer",
+                                        "example": 1
+                                    },
+                                    "password": {
+                                        "type": "string",
+                                        "example": "teste123456"
+                                    },
+                                    "password_confirmation": {
+                                        "type": "string",
+                                        "example": "teste123456"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Login criado com sucesso",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    },
+                    "200": {
+                        "description": "Login criado com sucesso",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "O servidor não entende o tipo de conteúdo da entidade de solicitação",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Ocoreu um erro"
+                    },
+                    "404": {
+                        "description": "Página não localizada"
+                    }
+                }
+            }
+        },
+        "/users": {
+            "post": {
+                "tags": [
+                    "Usuário"
+                ],
+                "summary": "Criar usuário",
+                "operationId": "createUser",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "cpf",
+                                    "name",
+                                    "email",
+                                    "perfil_id",
+                                    "password",
+                                    "password_confirmation"
+                                ],
+                                "properties": {
+                                    "cpf": {
+                                        "type": "string",
+                                        "example": "00000000191"
+                                    },
+                                    "name": {
+                                        "type": "string",
+                                        "example": "teste"
+                                    },
+                                    "email": {
+                                        "type": "string",
+                                        "example": "teste@mail.com"
+                                    },
+                                    "perfil_id": {
+                                        "type": "integer",
+                                        "example": 1
+                                    },
+                                    "password": {
+                                        "type": "string",
+                                        "example": "teste123456"
+                                    },
+                                    "password_confirmation": {
+                                        "type": "string",
+                                        "example": "teste123456"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Login criado com sucesso",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    },
+                    "200": {
+                        "description": "Login criado com sucesso",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "O servidor não entende o tipo de conteúdo da entidade de solicitação",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Ocoreu um erro"
+                    },
+                    "404": {
+                        "description": "Página não localizada"
+                    }
+                },
+                "security": [
+                    {
+                        "apiAuth": []
+                    }
+                ]
+            }
+        },
+        "/approve/{cpf}": {
+            "get": {
+                "tags": [
+                    "Usuário"
+                ],
+                "summary": "Aprovar usuário",
+                "operationId": "aprovarUsuario",
+                "parameters": [
+                    {
+                        "name": "cpf",
+                        "in": "path",
+                        "description": "Cpf do usuário",
+                        "schema": {
+                            "type": "string",
+                            "format": "int64",
+                            "example": "00000000191"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Busca realizada com sucesso",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    },
+                    "200": {
+                        "description": "Busca realizada com sucesso",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "O servidor não entende o tipo de conteúdo da entidade de solicitação",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Ocoreu um erro"
+                    },
+                    "404": {
+                        "description": "Página não localizada"
+                    }
+                },
+                "security": [
+                    {
+                        "apiAuth": []
+                    }
+                ]
+            }
+        },
+        "/block/{cpf}": {
+            "get": {
+                "tags": [
+                    "Usuário"
+                ],
+                "summary": "Bloquear usuário",
+                "operationId": "blockUsuario",
+                "parameters": [
+                    {
+                        "name": "cpf",
+                        "in": "path",
+                        "description": "Cpf do usuário",
+                        "schema": {
+                            "type": "string",
+                            "format": "int64",
+                            "example": "00000000191"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Busca realizada com sucesso",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    },
+                    "200": {
+                        "description": "Busca realizada com sucesso",
                         "content": {
                             "application/json": {
                                 "schema": {}

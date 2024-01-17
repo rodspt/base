@@ -2,23 +2,10 @@
 
 namespace App\Http\Requests;
 
-use App\Models\Teste as Modal;
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Validation\Rule;
 
-class TestRequest extends FormRequest
+class PaginationRequest extends FormRequest
 {
-    /**
-     * Traduz o nome da coluna no banco para o nome de exibição no request
-     */
-    public function attributes()
-    {
-        return [
-            'name' => 'Nome',
-            'description' => 'Descrição',
-        ];
-    }
-
     /**
      * Determine if the user is authorized to make this request.
      */
@@ -35,8 +22,9 @@ class TestRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => ['string', 'max:255'],
-            'description' => ['string', 'max:255', Rule::unique(Modal::class)->ignore($this?->teste)],
+            'totalPerPage' => ['nullable','integer','min:5'],
+            'page' => ['nullable','integer','min:1'],
+            'filter' => ['nullable','string', 'min:2', 'max:255']
         ];
     }
 }

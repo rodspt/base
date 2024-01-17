@@ -2,31 +2,36 @@
 
 namespace App\Http\Controllers\Auth;
 
+use App\DTO\Auth\AuthResetDTO;
 use App\Http\Controllers\Controller;
-use Illuminate\Auth\Events\PasswordReset;
+use App\Http\Requests\Auth\AuthResetRequest;
+use App\Services\AuthService;
+use App\Traits\ResponseTrait;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Password;
-use Illuminate\Support\Str;
-use Illuminate\Validation\Rules;
-use Illuminate\Validation\ValidationException;
 
 class ResetPasswordController extends Controller
 {
     /**
+     * Response trait to handle return responses.
+     */
+    use ResponseTrait;
+
+    public function __construct(private AuthService $authService)
+    {}
+
+    /**
      * @OA\Post(
      * path="/reset-password",
      * operationId="reset-password",
-     * tags={"reset-password"},
-     * tags={"Login"},
-     * summary="Resetar senha",
+     * tags={"Autenticação"},
+     * security={{"apiAuth":{}}},
+     * summary="Resetar senha - É necessário o token enviado por e-mail",
      *  @OA\RequestBody(
      *       required=true,
      *       @OA\JsonContent(
      *           required={"cpf","token","email","password","password_confirmation"},
-     *           @OA\Property(property="cpf", type="string"),
-     *           @OA\Property(property="token", type="string"),
+     *           @OA\Property(property="cpf", type="string", example="00000000191"),
+     *           @OA\Property(property="token", type="string", example="token-email"),
      *           @OA\Property(property="email", type="string", example="teste@mail.com"),
      *           @OA\Property(property="password", type="string", example="teste123456"),
      *           @OA\Property(property="password_confirmation", type="string", example="teste123456"),
@@ -39,35 +44,9 @@ class ResetPasswordController extends Controller
      *  @OA\Response(response=404, description="Página não localizada"),
      * )
      */
-    public function __invoke(Request $request): JsonResponse
+    public function __invoke(AuthResetRequest $request): JsonResponse
     {
-        $request->validate([
-            'token' => ['required'],
-            'cpf' => ['required', 'cpf'],
-            'email' => ['required', 'email'],
-            'password' => ['required', 'confirmed', Rules\Password::defaults()],
-        ]);
-
-        $status = Password::reset(
-            $request->only('cpf','email', 'password', 'password_confirmation', 'token'),
-            function ($user) use ($request) {
-                $user->forceFill([
-                    'password' => Hash::make($request->password),
-                    'remember_token' => Str::random(60),
-                ])->save();
-
-                event(new PasswordReset($user));
-            }
-        );
-
-        if ($status != Password::PASSWORD_RESET) {
-            throw ValidationException::withMessages([
-                'email' => [__($status)],
-            ]);
-        }
-
-        return response()->json([
-            'message' => __($status)
-        ]);
+        $msgRetorno = $this->authService->reset(new AuthResetDTO(... $request->validated()));
+        return response()->json(['message' => __($msgRetorno)]);
     }
 }

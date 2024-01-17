@@ -3,20 +3,27 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Auth\AuthResetEmailRequest;
+use App\Services\AuthService;
+use App\Traits\ResponseTrait;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Password;
-use Illuminate\Validation\ValidationException;
 
 class SendPasswordResetLinkController extends Controller
 {
     /**
+     * Response trait to handle return responses.
+     */
+    use ResponseTrait;
+
+    public function __construct(private AuthService $authService)
+    {}
+
+    /**
      * @OA\Post(
      * path="/forgot-password",
      * operationId="forgot-password",
-     * tags={"forgot-password"},
-     * tags={"Login"},
-     * summary="Recuperar senha",
+     * tags={"Autenticação"},
+     * summary="Envia o e-mail de recuperação com o token de recuperação",
      *  @OA\RequestBody(
      *       required=true,
      *       @OA\JsonContent(
@@ -31,24 +38,9 @@ class SendPasswordResetLinkController extends Controller
      *  @OA\Response(response=404, description="Página não localizada"),
      * )
      */
-    public function __invoke(Request $request): JsonResponse
+    public function __invoke(AuthResetEmailRequest $request): JsonResponse
     {
-        $request->validate([
-            'email' => ['required', 'email'],
-        ]);
-
-        $status = Password::sendResetLink(
-            $request->only('email')
-        );
-
-        if ($status != Password::RESET_LINK_SENT) {
-            throw ValidationException::withMessages([
-                'email' => [__($status)],
-            ]);
-        }
-
-        return response()->json([
-            'message' => __($status)
-        ]);
+        $msgRetorno = $this->authService->sendResetEmail($request->validated('email'));
+        return response()->json(['message' => __($msgRetorno)]);
     }
 }

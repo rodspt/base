@@ -1,8 +1,9 @@
 <?php
 
-namespace App\Http\Requests;
+namespace App\Http\Requests\User;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 use Illuminate\Validation\Rules\Password;
 
 class CreateUserRequest extends FormRequest
@@ -18,6 +19,7 @@ class CreateUserRequest extends FormRequest
             'name' => 'nome',
             'email' => 'e-mail',
             'password' => 'senha',
+            'perfil_id' => 'perfil',
         ];
     }
 
@@ -38,10 +40,11 @@ class CreateUserRequest extends FormRequest
     {
 
         return [
-            'cpf' => "required|min:11|max:11|unique:users,cpf",
+            'cpf' => ['required','cpf','min:11','max:11',Rule::unique('users')],
             'name' => ['required', 'string','min:3', 'max:255'],
-            'email' => ['required', 'string', 'email', 'max:255', 'unique:users,email'],
-            'password' => ['required', 'confirmed', Password::defaults()],
+            'email' => ['required', 'email', 'min:5', 'max:255', Rule::unique('users')],
+            'perfil_id' => ['required', 'integer',  Rule::exists('perfis','id')],
+            'password' => ['required', 'confirmed', 'min:8','max:20', Password::defaults()],
         ];
     }
 }
