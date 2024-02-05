@@ -22,7 +22,7 @@ use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
  * ),
  *
  * @OA\Server(
- *      url=L5_SWAGGER_CONST_HOST,
+ *      url="http://localhost:8000",
  *      description="Base API"
  * ),
  *

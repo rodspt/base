@@ -17,7 +17,7 @@ class UserSeeder extends Seeder
         $cpf =  '00000000191';
         User::factory()->create([
             'cpf' => $cpf,
-            'name' => 'teste',
+            'nome' => 'teste',
             'email' => 'teste@mail.com',
             'perfil_id' => 1,
             'password' => bcrypt('teste123456'),

@@ -16,7 +16,7 @@ class CreateUserRequest extends FormRequest
     {
         return [
             'cpf' => 'cpf',
-            'name' => 'nome',
+            'nome' => 'nome',
             'email' => 'e-mail',
             'password' => 'senha',
             'perfil_id' => 'perfil',
@@ -41,7 +41,7 @@ class CreateUserRequest extends FormRequest
 
         return [
             'cpf' => ['required','cpf','min:11','max:11',Rule::unique('users')],
-            'name' => ['required', 'string','min:3', 'max:255'],
+            'nome' => ['required', 'string','min:3', 'max:255'],
             'email' => ['required', 'email', 'min:5', 'max:255', Rule::unique('users')],
             'perfil_id' => ['required', 'integer',  Rule::exists('perfis','id')],
             'password' => ['required', 'confirmed', 'min:8','max:20', Password::defaults()],

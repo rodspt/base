@@ -2,16 +2,31 @@
 
 namespace App\Services;
 
+use App\DTO\PaginationDTO;
+use App\DTO\PaginationSearchDTO;
 use App\DTO\User\CreateUserDTO;
 use App\Enum\PerfilEnum;
 use App\Models\User;
+use App\Repositories\UserRepository;
 use Carbon\Carbon;
+use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Tymon\JWTAuth\Facades\JWTAuth;
 
 class UserService
 {
-    public function __construct(protected User $user)
+    public function __construct(protected User $user, protected UserRepository $userRepository)
     {}
+
+    public function getPaginatePermissions(PaginationDTO $dto) :LengthAwarePaginator
+    {
+        $dto->setDefault();
+        return $this->userRepository->getPaginatePermissions($dto);
+    }
+
+    public function getSearch(PaginationSearchDTO $dto) :LengthAwarePaginator
+    {
+        return $this->userRepository->getSearch($dto);
+    }
 
     public function findById(string $id): ?User
     {

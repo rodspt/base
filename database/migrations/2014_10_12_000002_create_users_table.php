@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('users', function (Blueprint $table) {
             $table->string('cpf',11)->primary()->unique()->comment('CPF do usuário');
-            $table->string('name')->comment('Nome do usuário');
+            $table->string('nome')->comment('Nome do usuário');
             $table->string('email')->unique()->comment('Email do usuário');
             $table->string('password');
 

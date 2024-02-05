@@ -79,10 +79,8 @@ class RouteService
 
         $arRoutes = Cache::remember('permission_route_'.$routeName, TempoEnum::MINUTO_DEZ,
             function() use ($route, $routeName){
-                return $route->load('perfis')->where('name', $routeName)
-                             ->get()
-                             ->first()
-                             ->toArray();
+                $routes = $route->load('perfis')->where('name', $routeName)->get()->first();
+                return $routes ? $routes->toArray() : [];
         });
 
         if(isset($arRoutes['perfis']))

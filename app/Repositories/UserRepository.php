@@ -6,7 +6,7 @@ use App\Models\User;
 use App\DTO\PaginationDTO;
 use Illuminate\Pagination\LengthAwarePaginator;
 
-class UserRepository
+class UserRepository extends ModelRepository
 {
     public function __construct(public User $user)
     {}
@@ -16,7 +16,7 @@ class UserRepository
         $filter = $dto->filter;
         return $this->route->where(function ($query) use ($filter) {
             if($filter !== "" && $filter !== '{filter}'){
-                $query->where('name', 'LIKE', "%{$filter}%");
+                $query->where('nome', 'LIKE', "%{$filter}%");
             }
         })->paginate($dto->totalPerPage, ['*'], 'page', $dto->page);
     }

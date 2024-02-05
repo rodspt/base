@@ -987,7 +987,7 @@
                             "schema": {
                                 "required": [
                                     "cpf",
-                                    "name",
+                                    "nome",
                                     "email",
                                     "perfil_id",
                                     "password",
@@ -998,7 +998,7 @@
                                         "type": "string",
                                         "example": "00000000191"
                                     },
-                                    "name": {
+                                    "nome": {
                                         "type": "string",
                                         "example": "teste"
                                     },
@@ -1072,7 +1072,7 @@
                             "schema": {
                                 "required": [
                                     "cpf",
-                                    "name",
+                                    "nome",
                                     "email",
                                     "perfil_id",
                                     "password",
@@ -1083,7 +1083,7 @@
                                         "type": "string",
                                         "example": "00000000191"
                                     },
-                                    "name": {
+                                    "nome": {
                                         "type": "string",
                                         "example": "teste"
                                     },

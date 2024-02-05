@@ -34,9 +34,9 @@ class UserController extends Controller
      *  @OA\RequestBody(
      *       required=true,
      *       @OA\JsonContent(
-     *           required={"cpf","name","email","perfil_id","password","password_confirmation"},
+     *           required={"cpf","nome","email","perfil_id","password","password_confirmation"},
      *           @OA\Property(property="cpf", type="string", example="00000000191"),
-     *           @OA\Property(property="name", type="string", example="teste"),
+     *           @OA\Property(property="nome", type="string", example="teste"),
      *           @OA\Property(property="email", type="string", example="teste@mail.com"),
      *           @OA\Property(property="perfil_id", type="integer", example=1),
      *           @OA\Property(property="password", type="string", example="teste123456"),
@@ -69,9 +69,9 @@ class UserController extends Controller
      *  @OA\RequestBody(
      *       required=true,
      *       @OA\JsonContent(
-     *           required={"cpf","name","email","perfil_id","password","password_confirmation"},
+     *           required={"cpf","nome","email","perfil_id","password","password_confirmation"},
      *           @OA\Property(property="cpf", type="string", example="00000000191"),
-     *           @OA\Property(property="name", type="string", example="teste"),
+     *           @OA\Property(property="nome", type="string", example="teste"),
      *           @OA\Property(property="email", type="string", example="teste@mail.com"),
      *           @OA\Property(property="perfil_id", type="integer", example=1),
      *           @OA\Property(property="password", type="string", example="teste123456"),

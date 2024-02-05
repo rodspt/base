@@ -66,14 +66,14 @@ class AuthService
         $user = $this->findById($request->id);
 
         if ($user->hasVerifiedEmail()) {
-            return array('message' => 'E-mail ja verificado');
+            return array('message' => 'E-mail ja verificado','status'=> 401);
         }
 
         if ($user->markEmailAsVerified()) {
             event(new Verified($user));
         }
 
-        return array('message' => 'E-mail verificado com sucesso');
+        return array('message' => 'E-mail verificado com sucesso', 'status'=> 200);
     }
 
     public function sendResetEmail(string $email): string

@@ -7,6 +7,17 @@ use Illuminate\Http\Resources\Json\JsonResource;
 
 class UserResource extends JsonResource
 {
+
+    public function userStatus($user)
+    {
+        if(!is_null($user->cpf_bloqueio))
+        {
+            return 'Bloqueado';
+        }else{
+            return !is_null($user->cpf_aprovacao) ? 'Ativo' : 'Pendente';
+        }
+
+    }
     /**
      * Transform the resource into an array.
      *
@@ -16,8 +27,9 @@ class UserResource extends JsonResource
     {
         return [
             'cpf' => $this->cpf,
-            'name' => $this->name,
+            'nome' => $this->nome,
             'email' => $this->email,
+            'status' => $this->userStatus($this)
         ];
     }
 }
