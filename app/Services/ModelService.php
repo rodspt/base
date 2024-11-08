@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Models\User;
 use App\Traits\ResponseTrait;
 use Illuminate\Support\Facades\Cache;
 
@@ -47,14 +48,18 @@ class ModelService
     public function clearCache($classe, $id = null)
     {
         $classe = class_basename($classe);
-    
+       
         if(!is_null($id)){
             $nameCache = $classe ."_".$id;
             Cache::forget($nameCache);
         }else{
-            $perPage = config('app.per_page');
-            $nameCache = $classe."_search_1_".$perPage;
-            Cache::forget($nameCache);
+            $redis = Cache::connection();
+            $cacheKeys = $redis->keys($classe.'_search*');
+            if($cacheKeys){
+              foreach ($cacheKeys as $key):
+                  Cache::forget($key);
+              endforeach;
+           }
         }
     }
 

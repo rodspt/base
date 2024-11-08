@@ -125,7 +125,7 @@ return [
 
         'options' => [
             'cluster' => env('REDIS_CLUSTER', 'redis'),
-            'prefix' => env('REDIS_PREFIX', 'base_'),
+            'prefix' => env('REDIS_PREFIX', 'base_redis_'.getenv('APP_ENV','local').'_'),
         ],
 
         'default' => [
