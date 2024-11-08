@@ -46,16 +46,16 @@ class ModelService
 
     public function clearCache($classe, $id = null)
     {
+        $classe = class_basename($classe);
+    
         if(!is_null($id)){
-            $nameCache = class_basename($classe)."_".$id;
+            $nameCache = $classe ."_".$id;
             Cache::forget($nameCache);
         }else{
-            $classe = class_basename($classe);
             $perPage = config('app.per_page');
             $nameCache = $classe."_search_1_".$perPage;
             Cache::forget($nameCache);
         }
-
     }
 
     public function show($id)

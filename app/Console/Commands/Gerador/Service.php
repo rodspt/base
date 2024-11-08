@@ -19,10 +19,10 @@ class Service
 
 namespace App\Services;
 
-use App\Models\%s as Model;
-use App\Http\Requests\%sRequest as FormRequest;
-use App\Repositories\%sRepository as Repository;
-use App\Http\Resources\%sResource as Resource;
+use App\Models\%s;
+use App\Http\Requests\%s\%sRequest;
+use App\Http\Resources\%s\%sResource;
+use App\Repositories\%sRepository;
 use App\Traits\ResponseTrait;
 
 ');
@@ -41,9 +41,9 @@ use App\Traits\ResponseTrait;
     public $resource;
 
     public function __construct(){
-        $this->model = new Model();
-        $this->repository = new Repository();
-        $this->resource = new Resource(new Model());
+        $this->model = new '.$nome.'();
+        $this->repository = new '.$nome.'Repository();
+        $this->resource = new '.$nome.'Resource(new '.$nome.'());
     }
 
 ';
@@ -54,11 +54,12 @@ use App\Traits\ResponseTrait;
     public static function save($arParms, $texto)
     {
         $s = "            ";
+        $nome = $arParms['nome'];
         $l = "
 ";
         $texto .= '
 
-    public function save(FormRequest $request, $id = null)
+    public function save('.$nome.'Request $request, $id = null)
     {
 
         try {

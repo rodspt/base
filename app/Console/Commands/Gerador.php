@@ -44,7 +44,7 @@ class Gerador extends Command
 
     private function getConsole()
     {
-        $name = $this->ask('Informe o nome do prefixo da classes ( Ex: TestController deve ser informado Test)');
+        $name = $this->ask('Informe o nome do prefixo das classes ( Ex: TestController deve ser informado Test)');
         if(!$name){
             $this->error( "\n".'O prefixo da classe não foi informado'. "\n");exit();
         }else{

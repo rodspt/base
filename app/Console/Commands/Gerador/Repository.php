@@ -19,7 +19,7 @@ class Repository
 
 namespace App\Repositories;
 
-use App\Models\%s as Model;
+use App\Models\%s;
 use App\Traits\SearchTrait;
 use Illuminate\Support\Facades\Cache;
 
@@ -42,6 +42,7 @@ use Illuminate\Support\Facades\Cache;
     {
         $search = "'search'";
         $perPage = "'perPage'";
+        $nome = $arParams['nome'];
         $page = "'page'";
         $app_per_page = "'app.per_page'";
         $s = "    ";
@@ -54,11 +55,11 @@ use Illuminate\Support\Facades\Cache;
         $texto .= $s.$s.'$page = $request->get('.$page.',1);'.$l;
         $texto .= $s.$s.'$perPage = $request->get('.$perPage.',config('.$app_per_page.'));'.$l;
         $texto .= $s.$s.'$search = $this->filtroSearch($request->get('.$search.'));'.$l;
-        $texto .= $s.$s.'$nameCache = $this->cacheSearch(Model::class, $perPage, $page, $search);'.$l.$l;
+        $texto .= $s.$s.'$nameCache = $this->cacheSearch('.$nome.'::class, $perPage, $page, $search);'.$l.$l;
 
 
         $texto .= $s.$s.'return Cache::remember($nameCache, 60, function () use($search, $request, $perPage,  $page) {
-            $data = Model::query();
+            $data = '.$nome.'::query();
 
               if(!is_null($search))
                {

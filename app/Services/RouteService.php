@@ -3,12 +3,10 @@
 namespace App\Services;
 
 use App\DTO\PaginationDTO;
-use App\DTO\Route\CreatePerfilDTO;
-use App\DTO\Route\EditPerfilDTO;
+use App\DTO\Route\CreateRouteDTO;
+use App\DTO\Route\EditRouteDTO;
 use App\Enum\PerfilEnum;
 use App\Enum\TempoEnum;
-use App\Http\Resources\PerfilResource;
-use App\Http\Resources\RouteResource;
 use App\Models\Perfil;
 use App\Models\Route;
 use App\Models\User;
@@ -32,7 +30,7 @@ class RouteService
         return $this->routeRepository->route->find($id);
     }
 
-    public function createNew(CreatePerfilDTO $dto): Route
+    public function createNew(CreateRouteDTO $dto): Route
     {
         $data = (array) $dto;
         return $this->routeRepository->route->create($data);
@@ -49,7 +47,7 @@ class RouteService
     }
 
 
-    public function update(EditPerfilDTO $dto): bool
+    public function update(EditRouteDTO $dto): bool
     {
         if(!$route = $this->findById($dto->id)){
             return false;

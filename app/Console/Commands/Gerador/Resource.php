@@ -17,16 +17,16 @@ class Resource
         $total = "'total'";
         return str_replace("%s",$nome,'<?php
 
-namespace App\Http\Resources;
+namespace App\Http\Resources\%s;
 
-use App\Models\%s as Model;
+use App\Models\%s;
 use Illuminate\Http\Resources\Json\ResourceCollection;
 
 class %sResource extends ResourceCollection
 {
     public function toArray($request)
     {
-        $this->collection->transform(function(Model $model) {
+        $this->collection->transform(function('.$nome.' $model) {
             return $this->colecao($model);
         });
         return [
@@ -42,10 +42,11 @@ class %sResource extends ResourceCollection
     public static function colecao($arParams, $texto)
     {
         $id = "'" . $arParams['id'] . "'";
+        $nome = $arParams['nome'];
         $s = "   ";
         $l = "
 ";
-        $texto .= $s.'public function colecao(Model $model)
+        $texto .= $s.'public function colecao('.$nome.' $model)
     {
         return ['.$l;
              $texto .= "         ".$id . ' => $model->'. $arParams['id'] . "," . $l;
@@ -73,7 +74,14 @@ $texto .= "}";
     public static function save($nome,$texto)
     {
 
-        $nameFile = "/app/Http/Resources/".$nome."Resource.php";
+        $nameFile = "/app/Http/Resources/".$nome."/".$nome."Resource.php";
+
+        $directory = dirname(base_path($nameFile));
+        if (!is_dir($directory)) {
+            mkdir($directory, 0777, true);
+            chown($directory, 'sail');
+            chgrp($directory, 'sail');
+        }
 
         $arquivo = fopen(base_path($nameFile), 'w+');
         fwrite($arquivo, $texto);

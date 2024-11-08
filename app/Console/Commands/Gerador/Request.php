@@ -17,15 +17,15 @@ class Request
 
     public static function namespace($nome)
     {
-        return sprintf("<?php
+        return str_replace("%s",  $nome,"<?php
 
-namespace App\Http\Requests;
+namespace App\Http\Requests\%s;
 
-use App\Models\%s as Model;
+use App\Models\%s;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
-",$nome);
+");
     }
 
 
@@ -81,6 +81,7 @@ use Illuminate\Validation\Rule;
         $l = "
 ";
         $texto .= $s."public function rules(): array".$l;
+        $nome = $arParams['nome'];
         $texto .= $s."{".$l.$l;
 
         $texto .= $s." return [".$l;
@@ -99,7 +100,7 @@ use Illuminate\Validation\Rule;
                 }
                 if(isset($campo['atributos']['uniqueform'])){
                     $route = $arParams['rota'];
-                    $texto .=",". 'Rule::unique(Model::class)->ignore($this?->'.$route.')';
+                    $texto .=",". 'Rule::unique('.$nome.'::class)->ignore($this?->'.$route.')';
                 }
 
                 $texto .= "],".$l;
@@ -115,7 +116,14 @@ use Illuminate\Validation\Rule;
     public static function save($nome,$texto)
     {
 
-        $nameFile = "/app/Http/Requests/".$nome."Request.php";
+        $nameFile = "/app/Http/Requests/".$nome."/".$nome."Request.php";
+
+        $directory = dirname(base_path($nameFile));
+        if (!is_dir($directory)) {
+            mkdir($directory, 0777, true);
+            chown($directory, 'sail');
+            chgrp($directory, 'sail');
+        }
 
         $arquivo = fopen(base_path($nameFile), 'w+');
         fwrite($arquivo, $texto);

@@ -22,8 +22,8 @@ class Controller
 
 namespace App\Http\Controllers;
 
-use App\Services\%sService as Service;
-use App\Http\Requests\%sRequest as FormRequest;
+use App\Services\%sService;
+use App\Http\Requests\%s\%sRequest;
 use Illuminate\Http\Request;
 
 
@@ -39,7 +39,7 @@ class %sController extends Controller
 
     public $service;
 
-    public function __construct(Service $service)
+    public function __construct(%sService $service)
     {
         $this->service = $service;
     }
@@ -67,7 +67,7 @@ class %sController extends Controller
   if($arParams['auth']){
     $texto .= $s.'* security={{"apiAuth":{}}},'.$l;
   }
-  $texto .= $s.'*  @OA\Parameter(description="Descrição do filtro", allowEmptyValue = true, in="path", name="search", required=false,
+$texto .= $s.'*  @OA\Parameter(description="Descrição do filtro", allowEmptyValue = true, in="path", name="search", required=false,
      *       @OA\Schema(type="string", example="")),
      *  @OA\Response(response=201, description="Listagem realizada com sucesso", @OA\JsonContent()),
      *  @OA\Response(response=200, description="Listagem realizada com sucesso", @OA\JsonContent()),
@@ -182,11 +182,11 @@ class %sController extends Controller
          *  @OA\Response(response=404, description="Página não localizada"),
          * )
          */
-    public function store(FormRequest $request)
+    public function store(%sRequest $request)
     {
         return $this->service->save($request);
     }'.$l.$l;
-        return $texto;
+        return str_replace("%s",$nome,$texto);
     }
 
     public static function update($arParams, $texto)
@@ -250,11 +250,11 @@ class %sController extends Controller
          *  @OA\Response(response=404, description="Página não localizada"),
          * )
          */
-        public function update(FormRequest $request, $teste)
+        public function update(%sRequest $request, $teste)
         {
             return $this->service->save($request, $teste);
         }'.$l.$l;
-        return $texto;
+        return  str_replace("%s",$nome,$texto);
     }
 
 
