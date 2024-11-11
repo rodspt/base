@@ -389,6 +389,322 @@
                 ]
             }
         },
+        "/guia?search={search}": {
+            "get": {
+                "tags": [
+                    "Guia"
+                ],
+                "summary": "Listagem de Guia",
+                "operationId": "listarGuia",
+                "parameters": [
+                    {
+                        "name": "search",
+                        "in": "path",
+                        "description": "Descrição do filtro",
+                        "required": false,
+                        "allowEmptyValue": true,
+                        "schema": {
+                            "type": "string",
+                            "example": ""
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Listagem realizada com sucesso",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    },
+                    "200": {
+                        "description": "Listagem realizada com sucesso",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "O servidor não entende o tipo de conteúdo da entidade de solicitação",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Ocoreu um erro"
+                    },
+                    "404": {
+                        "description": "Página não localizada"
+                    }
+                },
+                "security": [
+                    {
+                        "apiAuth": []
+                    }
+                ]
+            }
+        },
+        "/guia/{guia}": {
+            "get": {
+                "tags": [
+                    "Guia"
+                ],
+                "summary": "Buscar Guia",
+                "operationId": "buscarGuia",
+                "parameters": [
+                    {
+                        "name": "guia",
+                        "in": "path",
+                        "description": "Id",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64",
+                            "example": 1
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Busca realizada com sucesso",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    },
+                    "200": {
+                        "description": "Busca realizada com sucesso",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "O servidor não entende o tipo de conteúdo da entidade de solicitação",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Ocoreu um erro"
+                    },
+                    "404": {
+                        "description": "Página não localizada"
+                    }
+                },
+                "security": [
+                    {
+                        "apiAuth": []
+                    }
+                ]
+            },
+            "put": {
+                "tags": [
+                    "Guia"
+                ],
+                "summary": "Atualizar Guia",
+                "operationId": "updateGuia",
+                "parameters": [
+                    {
+                        "name": "guia",
+                        "in": "path",
+                        "description": "ID",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64",
+                            "example": 1
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "nome"
+                                ],
+                                "properties": {
+                                    "nome": {
+                                        "type": "string",
+                                        "example": "Nome"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Guia atualizado com sucesso",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    },
+                    "200": {
+                        "description": "Guia atualizado com sucesso",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "O servidor não entende o tipo de conteúdo da entidade de solicitação",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Ocoreu um erro"
+                    },
+                    "404": {
+                        "description": "Página não localizada"
+                    }
+                },
+                "security": [
+                    {
+                        "apiAuth": []
+                    }
+                ]
+            },
+            "delete": {
+                "tags": [
+                    "Guia"
+                ],
+                "summary": "Deletar Guia",
+                "operationId": "excluirGuia",
+                "parameters": [
+                    {
+                        "name": "guia",
+                        "in": "path",
+                        "description": "ID",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64",
+                            "example": 1
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Guia excluido com sucesso",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    },
+                    "200": {
+                        "description": "Guia excluido com sucesso",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "O servidor não entende o tipo de conteúdo da entidade de solicitação",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Ocoreu um erro"
+                    },
+                    "404": {
+                        "description": "Página não localizada"
+                    }
+                },
+                "security": [
+                    {
+                        "apiAuth": []
+                    }
+                ]
+            }
+        },
+        "/guia": {
+            "post": {
+                "tags": [
+                    "Guia"
+                ],
+                "summary": "Registrar Guia",
+                "operationId": "registerGuia",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "nome"
+                                ],
+                                "properties": {
+                                    "nome": {
+                                        "type": "string",
+                                        "example": "Nome"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Guia cadastrado com sucesso",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    },
+                    "200": {
+                        "description": "Guia cadastrado com sucesso",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "O servidor não entende o tipo de conteúdo da entidade de solicitação",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Ocoreu um erro"
+                    },
+                    "404": {
+                        "description": "Página não localizada"
+                    }
+                },
+                "security": [
+                    {
+                        "apiAuth": []
+                    }
+                ]
+            }
+        },
         "/perfis?totalPerPage={totalPerPage}&page={page}&filter={filter}": {
             "get": {
                 "tags": [
@@ -945,322 +1261,6 @@
                     },
                     "200": {
                         "description": "Rota criado com sucesso",
-                        "content": {
-                            "application/json": {
-                                "schema": {}
-                            }
-                        }
-                    },
-                    "422": {
-                        "description": "O servidor não entende o tipo de conteúdo da entidade de solicitação",
-                        "content": {
-                            "application/json": {
-                                "schema": {}
-                            }
-                        }
-                    },
-                    "400": {
-                        "description": "Ocoreu um erro"
-                    },
-                    "404": {
-                        "description": "Página não localizada"
-                    }
-                },
-                "security": [
-                    {
-                        "apiAuth": []
-                    }
-                ]
-            }
-        },
-        "/test?search={search}": {
-            "get": {
-                "tags": [
-                    "Test"
-                ],
-                "summary": "Listagem de Test",
-                "operationId": "listarTest",
-                "parameters": [
-                    {
-                        "name": "search",
-                        "in": "path",
-                        "description": "Descrição do filtro",
-                        "required": false,
-                        "allowEmptyValue": true,
-                        "schema": {
-                            "type": "string",
-                            "example": ""
-                        }
-                    }
-                ],
-                "responses": {
-                    "201": {
-                        "description": "Listagem realizada com sucesso",
-                        "content": {
-                            "application/json": {
-                                "schema": {}
-                            }
-                        }
-                    },
-                    "200": {
-                        "description": "Listagem realizada com sucesso",
-                        "content": {
-                            "application/json": {
-                                "schema": {}
-                            }
-                        }
-                    },
-                    "422": {
-                        "description": "O servidor não entende o tipo de conteúdo da entidade de solicitação",
-                        "content": {
-                            "application/json": {
-                                "schema": {}
-                            }
-                        }
-                    },
-                    "400": {
-                        "description": "Ocoreu um erro"
-                    },
-                    "404": {
-                        "description": "Página não localizada"
-                    }
-                },
-                "security": [
-                    {
-                        "apiAuth": []
-                    }
-                ]
-            }
-        },
-        "/test/{test}": {
-            "get": {
-                "tags": [
-                    "Test"
-                ],
-                "summary": "Buscar Test",
-                "operationId": "buscarTest",
-                "parameters": [
-                    {
-                        "name": "test",
-                        "in": "path",
-                        "description": "Id",
-                        "required": true,
-                        "schema": {
-                            "type": "integer",
-                            "format": "int64",
-                            "example": 1
-                        }
-                    }
-                ],
-                "responses": {
-                    "201": {
-                        "description": "Busca realizada com sucesso",
-                        "content": {
-                            "application/json": {
-                                "schema": {}
-                            }
-                        }
-                    },
-                    "200": {
-                        "description": "Busca realizada com sucesso",
-                        "content": {
-                            "application/json": {
-                                "schema": {}
-                            }
-                        }
-                    },
-                    "422": {
-                        "description": "O servidor não entende o tipo de conteúdo da entidade de solicitação",
-                        "content": {
-                            "application/json": {
-                                "schema": {}
-                            }
-                        }
-                    },
-                    "400": {
-                        "description": "Ocoreu um erro"
-                    },
-                    "404": {
-                        "description": "Página não localizada"
-                    }
-                },
-                "security": [
-                    {
-                        "apiAuth": []
-                    }
-                ]
-            },
-            "put": {
-                "tags": [
-                    "Test"
-                ],
-                "summary": "Atualizar Test",
-                "operationId": "updateTest",
-                "parameters": [
-                    {
-                        "name": "test",
-                        "in": "path",
-                        "description": "ID",
-                        "required": true,
-                        "schema": {
-                            "type": "integer",
-                            "format": "int64",
-                            "example": 1
-                        }
-                    }
-                ],
-                "requestBody": {
-                    "required": true,
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "required": [
-                                    "nome"
-                                ],
-                                "properties": {
-                                    "nome": {
-                                        "type": "string",
-                                        "example": "Nome"
-                                    }
-                                },
-                                "type": "object"
-                            }
-                        }
-                    }
-                },
-                "responses": {
-                    "201": {
-                        "description": "Test atualizado com sucesso",
-                        "content": {
-                            "application/json": {
-                                "schema": {}
-                            }
-                        }
-                    },
-                    "200": {
-                        "description": "Test atualizado com sucesso",
-                        "content": {
-                            "application/json": {
-                                "schema": {}
-                            }
-                        }
-                    },
-                    "422": {
-                        "description": "O servidor não entende o tipo de conteúdo da entidade de solicitação",
-                        "content": {
-                            "application/json": {
-                                "schema": {}
-                            }
-                        }
-                    },
-                    "400": {
-                        "description": "Ocoreu um erro"
-                    },
-                    "404": {
-                        "description": "Página não localizada"
-                    }
-                },
-                "security": [
-                    {
-                        "apiAuth": []
-                    }
-                ]
-            },
-            "delete": {
-                "tags": [
-                    "Test"
-                ],
-                "summary": "Deletar Test",
-                "operationId": "excluirTest",
-                "parameters": [
-                    {
-                        "name": "test",
-                        "in": "path",
-                        "description": "ID",
-                        "required": true,
-                        "schema": {
-                            "type": "integer",
-                            "format": "int64",
-                            "example": 1
-                        }
-                    }
-                ],
-                "responses": {
-                    "201": {
-                        "description": "Test excluido com sucesso",
-                        "content": {
-                            "application/json": {
-                                "schema": {}
-                            }
-                        }
-                    },
-                    "200": {
-                        "description": "Test excluido com sucesso",
-                        "content": {
-                            "application/json": {
-                                "schema": {}
-                            }
-                        }
-                    },
-                    "422": {
-                        "description": "O servidor não entende o tipo de conteúdo da entidade de solicitação",
-                        "content": {
-                            "application/json": {
-                                "schema": {}
-                            }
-                        }
-                    },
-                    "400": {
-                        "description": "Ocoreu um erro"
-                    },
-                    "404": {
-                        "description": "Página não localizada"
-                    }
-                },
-                "security": [
-                    {
-                        "apiAuth": []
-                    }
-                ]
-            }
-        },
-        "/test": {
-            "post": {
-                "tags": [
-                    "Test"
-                ],
-                "summary": "Registrar Test",
-                "operationId": "registerTest",
-                "requestBody": {
-                    "required": true,
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "required": [
-                                    "nome"
-                                ],
-                                "properties": {
-                                    "nome": {
-                                        "type": "string",
-                                        "example": "Nome"
-                                    }
-                                },
-                                "type": "object"
-                            }
-                        }
-                    }
-                },
-                "responses": {
-                    "201": {
-                        "description": "Test cadastrado com sucesso",
-                        "content": {
-                            "application/json": {
-                                "schema": {}
-                            }
-                        }
-                    },
-                    "200": {
-                        "description": "Test cadastrado com sucesso",
                         "content": {
                             "application/json": {
                                 "schema": {}
